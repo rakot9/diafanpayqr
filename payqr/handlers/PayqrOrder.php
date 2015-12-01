@@ -91,16 +91,18 @@ class PayqrOrder
         /**
          * Создаем заказ на основе корзины
          */
-        foreach($this->invoice->getCart() as $product)
-        {
-            $product->amount;
-            $product->article;
-            $product->name;
-            $product->imageURL;
-            $product->quantity;
-        }
+        // foreach($this->invoice->getCart() as $product)
+        // {
+        //     $product->amount;
+        //     $product->article;
+        //     $product->name;
+        //     $product->imageURL;
+        //     $product->quantity;
+        // }
 
         //создаем заказ
+        $this->diafan->_site->module = 'cart';
+        $this->diafan->current_module = 'cart';
         Custom::inc('modules/cart/cart.php');
         $cart = new Cart($this->diafan);
 
