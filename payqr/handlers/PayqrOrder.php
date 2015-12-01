@@ -129,7 +129,7 @@ class PayqrOrder
 
         foreach($this->invoice->getCart() as $product)
         {
-            $shop_good_id = DB::query("INSERT INTO {shop_order_goods} (order_id, good_id, count_goods) VALUES (%d, %d, %f)", $order_id, rand((float)$product->amount, 2), (int)$product->quantity);
+            $shop_good_id = DB::query("INSERT INTO {shop_order_goods} (order_id, good_id, count_goods) VALUES (%d, %d, %f)", $order_id, $product->article, (int)$product->quantity);
 
             PayqrLog::log("Вставили товар и получили идентификатор товара в {shop_order_goods}: " . $shop_good_id);
 
