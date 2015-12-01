@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="payqr" platform="mysql" defaultEngine="MyISAM" phpdoc-package="payqr" version="1.1">
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="merchant_id"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value=""/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="Номер магазина (MerchantID)"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="secret_key_in"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value=""/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="Входящий секретный ключ (SecretKeyIn)"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="secret_key_out"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value=""/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="Исходящий секретный ключ (SecretKeyOut)"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="hook_handler_url"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value=""/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="URL для уведомлений"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="log_url"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value="payqr.log"/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="URL PayQR логов"/>
+        <field name="active" value="1"/>
+    </object>
+    <!-- cart -->
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="payqr-button_color"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="default"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "green":"Зеленый", "red":"Красный", "blue":"Синий", "orange": "Оранжевый"}'/>
+        <field name="description" value="Цвет кнопки"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="payqr-button_form"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="default"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "sharp":"Без округления", "rude":"Минимальное округление", "soft":"Мягкое округление", "sleek":"Значительное округление", "oval":"Максимальное округление"}'/>
+        <field name="description" value="Форма кнопки"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="payqr-button_shadow"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="default"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "shadow":"Включена", "noshadow":"Отключена"}'/>
+        <field name="description" value="Тень кнопки"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="payqr-button_gradient"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="default"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "flat":"Отключен", "gradient":"Включен"}'/>
+        <field name="description" value="Градиент кнопки"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="payqr-button_font_trans"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="default"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "small":"Мелко", "medium":"Средне", "large":"Крупно"}'/>
+        <field name="description" value="Размер шрифта"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="payqr-button_font_width"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="default"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "normal":"Отключен", "bold":"Включен"}'/>
+        <field name="description" value="Жирный шрифт"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="payqr-button_text"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="default"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "lowercase":"Нижний", "standartcase":"Стандартный", "uppercase":"Верхний"}'/>
+        <field name="description" value="Регистр текста"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="button_height"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value="auto"/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="Высота кнопки"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="button_width"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value="auto"/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="Ширина кнопки"/>
+        <field name="active" value="1"/>
+    </object>
+    <!-- common -->
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="data-firstname-required"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="default"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "deny":"Не запрашивать", "required":"Запрашивать"}'/>
+        <field name="description" value="Запрашивать имя покупателя"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="data-lastname-required"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="default"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "deny":"Не запрашивать", "required":"Запрашивать"}'/>
+        <field name="description" value="Запрашивать фамилию покупателя"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="data-middlename-required"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="default"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "deny":"Не запрашивать", "required":"Запрашивать"}'/>
+        <field name="description" value="Запрашивать отчество покупателя"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="data-phone-required"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="default"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "deny":"Не запрашивать", "required":"Запрашивать"}'/>
+        <field name="description" value="Запрашивать номер телефона покупателя"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="data-email-required"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="default"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "deny":"Не запрашивать", "required":"Запрашивать"}'/>
+        <field name="description" value="Запрашивать заполнения e-mail покупателем"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="data-delivery-required"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="default"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "deny":"Не запрашивать", "required":"Запрашивать", "nonrequired":"Запросить после оплаты"}'/>
+        <field name="description" value="Запрашивать адрес доставки"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="data-deliverycases-required"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="default"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "deny":"Не запрашивать", "required":"Запрашивать"}'/>
+        <field name="description" value="Могут ли быть в магазине способы доставки"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="data-pickpoints-required"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="deny"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "deny":"Не запрашивать", "required":"Запрашивать"}'/>
+        <field name="description" value="Могут ли быть в магазине точки самовывоза"/>
+        <field name="active" value="0"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="data-promocode-required"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="deny"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "deny":"Не запрашивать", "nonrequired":"Запросить после оплаты"}'/>
+        <field name="description" value="Предлагать ввести промо-код"/>
+        <field name="active" value="0"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="data-promocard-required"/>
+        <field name="htmltype" value="select"/>
+        <field name="htmlvalue" value="deny"/>
+        <field name="htmlpossiblevalues" value='{"default":"По умолчанию", "deny":"Не запрашивать", "nonrequired":"Запросить после оплаты"}'/>
+        <field name="description" value="Предлагать ввести карту лояльности"/>
+        <field name="active" value="0"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="promo_code"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value=""/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="Текстовое название промо-идентификатора"/>
+        <field name="active" value="1"/>
+    </object>
+    <!-- сообщение на событие создания заказа -->
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="user_message_order_creating_text"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value=""/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="Сообщение при создании заказа"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="user_message_order_creating_url"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value=""/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="Ссылка при создании заказа"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="user_message_order_creating_imageurl"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value=""/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="Изображение при создании заказа"/>
+        <field name="active" value="1"/>
+    </object>
+    <!-- // -->
+    <!-- сообщение на событие оплата заказа -->
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="user_message_order_paid_text"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value=""/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="Сообщение при оплате заказа"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="user_message_order_paid_url"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value=""/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="Ссылка при оплате заказа"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="user_message_order_paid_imageurl"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value=""/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="Изображение при оплате заказа"/>
+        <field name="active" value="1"/>
+    </object>
+    <!-- // -->
+    
+    <!-- сообщение на событие возврат денег -->
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="user_message_order_revert_text"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value=""/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="Сообщение при возврате денежных средств"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="user_message_order_revert_url"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value=""/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="Ссылка при возврате денежных средств"/>
+        <field name="active" value="1"/>
+    </object>
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value="user_message_order_revert_imageurl"/>
+        <field name="htmltype" value="text"/>
+        <field name="htmlvalue" value=""/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value="Изображение при возврате денежных средств"/>
+        <field name="active" value="1"/>
+    </object>
+    <!-- // -->
+    <!--
+    <object class="payqr_item_rows" table="payqr_items">
+        <field name="name" value=""/>
+        <field name="htmltype" value=""/>
+        <field name="htmlvalue" value=""/>
+        <field name="htmlpossiblevalues" value=""/>
+        <field name="description" value=""/>
+        <field name="active" value="1"/>
+    </object>
+    -->
+</model>
