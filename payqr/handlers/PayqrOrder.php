@@ -163,6 +163,8 @@ class PayqrOrder
             $discount["discount_id"] = 0;
         }
 
+        PayqrLog::log("Получили скидки: " . print_r($discount, true));
+
         DB::query("UPDATE {shop_order} SET summ=%f, discount_id=%d, discount_summ=%f WHERE id=%d", $summ, $discount["discount_id"], $discount["discount_summ"], $order_id);
 
         PayqrLog::log("Возвращаем идентификатор заказа");
@@ -205,12 +207,17 @@ class PayqrOrder
      */
     private function get_discount_total($cart_summ, $userId = null)
     {
+        PayqrLog::log("get_discount_total");
+
         $discount = false;
         $order_summ = 0;
         if($userId)
         {
             $order_summ = DB::query_result("SELECT SUM(summ) FROM {shop_order} WHERE user_id=%d AND (status='1' OR status='3')", $userId);
         }
+
+        PayqrLog::log("Order sum : " . $order_summ);
+
 
         //скидка на общую сумму заказа
         $person_discount_ids = $this->diafan->_shop->price_get_person_discounts();
@@ -228,6 +235,9 @@ class PayqrOrder
             ." OR threshold>0 AND threshold<=%f)",
             time(), time(), $order_summ, $cart_summ
         );
+
+        PayqrLog::log("После получения скидки: ", print_r($row, true));
+
         foreach ($rows as $row)
         {
             $row["discount_id"] = $row["id"];
