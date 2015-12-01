@@ -169,7 +169,7 @@ class PayqrOrder
 
             $price = $this->_dfnGetProductPrice((int)$product->article);
 
-            if(empty($price) || empty($price)
+            if(empty($price) || empty($price))
             {
                 continue;
             }
