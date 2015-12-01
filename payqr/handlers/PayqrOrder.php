@@ -291,7 +291,7 @@ class PayqrOrder
     private function _dfnGetUserRoleId($userId)
     {
         //см. таблицу {users_role}
-        return 1;
+        return 0;
     }
 
     /**
