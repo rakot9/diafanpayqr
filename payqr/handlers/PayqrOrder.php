@@ -125,7 +125,7 @@ class PayqrOrder
         PayqrLog::log("Создали заказ: " . $order_id);
 
         // товары
-        $goods_summ = 0;
+        $goods_summ = $summ = 0;
 
         foreach($this->invoice->getCart() as $product)
         {
@@ -147,9 +147,24 @@ class PayqrOrder
 
             DB::query("UPDATE {shop_order_goods} SET price=%f, discount_id=%d WHERE id=%d", $row["price"], $row["discount_id"], $shop_good_id);
 
-            $goods_summ += $row["price"] * $c["count"];
+            $goods_summ += $row["price"] * (int)$product->quantity;
         }
+        $summ += $goods_summ;
+        
         PayqrLog::log("Получили итоговую сумму заказа: " . $goods_summ);
+
+        if($discount = $this->get_discount_total($goods_summ, $userId))
+        {
+            $summ -= $discount["discount_summ"];
+        }
+        else
+        {
+            $discount["discount_summ"] = 0;
+            $discount["discount_id"] = 0;
+        }
+
+        DB::query("UPDATE {shop_order} SET summ=%f, discount_id=%d, discount_summ=%f WHERE id=%d", $summ, $discount["discount_id"], $discount["discount_summ"], $order_id);
+
         PayqrLog::log("Возвращаем идентификатор заказа");
 
         return $order_id;
@@ -184,8 +199,65 @@ class PayqrOrder
     }
     
     /**
-     * 
-     * 
+     * Получает скидку от общей суммы товаров
+     *
+     * @return float
+     */
+    private function get_discount_total($cart_summ, $userId = null)
+    {
+        $discount = false;
+        $order_summ = 0;
+        if($userId)
+        {
+            $order_summ = DB::query_result("SELECT SUM(summ) FROM {shop_order} WHERE user_id=%d AND (status='1' OR status='3')", $userId);
+        }
+
+        //скидка на общую сумму заказа
+        $person_discount_ids = $this->diafan->_shop->price_get_person_discounts();
+        PayqrLog::log("Получили скидки клиенту: ", print_r($person_discount_ids, true));
+
+
+        $userRoleId = $this->_dfnGetUserRoleId($userId);
+
+        $rows = DB::query_fetch_all("SELECT id, discount, amount, deduction, threshold, threshold_cumulative FROM"
+            ." {shop_discount} WHERE act='1' AND trash='0' AND (threshold_cumulative>0 OR threshold>0)"
+            ." AND role_id".($userRoleId ? ' IN (0, '.$userRoleId.')' : '=0')
+            ." AND (person='0'".($person_discount_ids ? " OR id IN(".implode(",", $person_discount_ids).")" : "").")"
+            ." AND date_start<=%d AND (date_finish=0 OR date_finish>=%d)"
+            ." AND (threshold_cumulative>0 AND threshold_cumulative<=%f"
+            ." OR threshold>0 AND threshold<=%f)",
+            time(), time(), $order_summ, $cart_summ
+        );
+        foreach ($rows as $row)
+        {
+            $row["discount_id"] = $row["id"];
+            if($row['deduction'])
+            {
+                if($row['deduction'] < $cart_summ)
+                {
+                    $row["discount_summ"] = $row["deduction"];
+                }
+                else
+                {
+                    $row["discount_summ"] = 0;
+                }
+            }
+            else
+            {
+                $row["discount_summ"] = $cart_summ * $row["discount"] / 100;
+            }
+            if(empty($discount) || $discount["discount_summ"] < $row["discount_summ"])
+            {
+                $discount = $row;
+            }
+        }
+        return $discount;
+    }
+
+    /**
+     * Получает стоимость товара с учетом скидки
+     * @param int $id
+     * @return int
      */
     private function _dfnGetProductPrice($id)
     {
@@ -196,6 +268,11 @@ class PayqrOrder
         return (float) (isset($price['price'])? $price['price'] : 0);
     }
 
+    /**
+     * Получает наименования товара с учетом скидки
+     * @param string $id
+     * @return string
+     */
     private function _dfnGetProductName($id)
     {
         $result = DB::query_fetch_array("SELECT name1 FROM {shop} WHERE id=%d ", $id);
@@ -204,6 +281,17 @@ class PayqrOrder
             return $result['name1'];
         }
         return "";
+    }
+
+    /**
+     * Получаем роль пользователя
+     * @var int userId
+     * @return int
+     */
+    private function _dfnGetUserRoleId($userId)
+    {
+        //см. таблицу {users_role}
+        return 1;
     }
 
     /**
