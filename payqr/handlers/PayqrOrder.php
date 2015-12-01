@@ -101,6 +101,7 @@ class PayqrOrder
         }
 
         //создаем заказ
+        Custom::inc('modules/cart/cart.php');
         $cart = new Cart($this->diafan);
 
         $params = $cart->model->get_params(array("module" => "shop", "table" => "shop_order", "where" => "show_in_form='1'", "fields" => "info"));
