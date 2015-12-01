@@ -129,7 +129,7 @@ class PayqrOrder
 
         foreach($this->invoice->getCart() as $product)
         {
-            $shop_good_id = DB::query("INSERT INTO {shop_order_goods} (order_id, good_id, count_goods) VALUES (%d, %d, %f)", $order_id, $product->article, (int)$product->quantity);
+            $shop_good_id = DB::query("INSERT INTO {shop_order_goods} (order_id, good_id, count_goods) VALUES (%d, %d, %f)", $order_id, (int)$product->article, (int)$product->quantity);
 
             PayqrLog::log("Вставили товар и получили идентификатор товара в {shop_order_goods}: " . $shop_good_id);
 
@@ -141,7 +141,7 @@ class PayqrOrder
             {
                 DB::query("INSERT INTO {shop_order_goods_param} (order_goods_id, value, param_id) VALUES ('%d', '%d', '%d')", $shop_good_id, $value, $id);
             }    
-            $row = $this->diafan->_shop->price_get((int)$product->quantity, $sparams);
+            $row = $this->diafan->_shop->price_get((int)$product->article, $sparams);
 
             PayqrLog::log("Получили информацию по цене товара: " . print_r($row, true));
 
