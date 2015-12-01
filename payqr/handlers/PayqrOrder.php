@@ -57,7 +57,7 @@ class PayqrOrder
 
         foreach($products as $product)
         {
-            $totalAmount += $product['amount'];
+            $totalAmount += $product->{'amount'};
         }
 
         return round($totalAmount, 2);
