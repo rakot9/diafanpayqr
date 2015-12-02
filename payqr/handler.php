@@ -47,5 +47,6 @@ catch (PayqrExeption $e)
 
 function encrypt($text)
 {
-    return md5($text);
+    //return md5($text);
+    return $text;
 }

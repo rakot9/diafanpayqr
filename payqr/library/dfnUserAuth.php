@@ -69,4 +69,21 @@ class dfnUserAuth {
 
 		return $this->getUserId($email);
 	}
+
+	/**
+     * Получаем роль пользователя
+     * @var int userId
+     * @return int
+     */
+    private function _dfnGetUserRoleId($userId)
+    {
+        //см. таблицу {users_role}
+        if($userId)
+        {
+            $order_summ = DB::query_result("SELECT * FROM {users} LEFT JOIN {} WHERE user_id=%d AND (status='1' OR status='3')", $userId);
+
+            return 1;
+        }
+        return 0;
+    }
 }

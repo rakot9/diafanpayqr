@@ -224,7 +224,7 @@ class PayqrOrder
         PayqrLog::log("Получили скидки клиенту: ", print_r($person_discount_ids, true));
 
 
-        $userRoleId = $this->_dfnGetUserRoleId($userId);
+        $userRoleId = dfnUserAuth::getInstance($this->diafan)->_dfnGetUserRoleId($userId);
 
         $rows = DB::query_fetch_all("SELECT id, discount, amount, deduction, threshold, threshold_cumulative FROM"
             ." {shop_discount} WHERE act='1' AND trash='0' AND (threshold_cumulative>0 OR threshold>0)"
@@ -291,17 +291,6 @@ class PayqrOrder
             return $result['name1'];
         }
         return "";
-    }
-
-    /**
-     * Получаем роль пользователя
-     * @var int userId
-     * @return int
-     */
-    private function _dfnGetUserRoleId($userId)
-    {
-        //см. таблицу {users_role}
-        return 0;
     }
 
     /**
