@@ -247,6 +247,11 @@ class InvoiceHandler
     public function setDeliveryCases()
     {
         $total = $this->invoice->getAmount();
+        
+        PayqrLog::log("SELECT sd.id, sd.name1, sd.text1, sdt.price  
+                                     FROM {shop_delivery} sd 
+                                     LEFT JOIN {shop_delivery_thresholds} sdt ON sd.id=sdt.delivery_id 
+                                     WHERE sd.act='1' AND sd.trash='0' AND sdt.trash='0' AND sdt.amount < ". $total);
 
         $rows = DB::query_fetch_all("SELECT sd.id, sd.name1, sd.text1, sdt.price  
                                      FROM {shop_delivery} sd 
@@ -254,6 +259,8 @@ class InvoiceHandler
                                      WHERE sd.act='1' AND sd.trash='0' AND sdt.trash='0' AND sdt.amount < %f", $total);
 
         $delivery_cases = array();
+
+        PayqrLog::log(print_r($rows, true));
 
         foreach($rows as $row)
         {
@@ -265,6 +272,8 @@ class InvoiceHandler
                 'amountTo' => $row['price']
             );
         }
+
+        PayqrLog::log(print_r($delivery_cases, true));
 
         $this->invoice->setDeliveryCases($delivery_cases);
     }
