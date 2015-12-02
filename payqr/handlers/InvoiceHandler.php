@@ -262,10 +262,12 @@ class InvoiceHandler
 
         PayqrLog::log(print_r($rows, true));
 
+        $i = 1;
         foreach($rows as $row)
         {
             $delivery_cases[] = array(
                 'article' => $row['id'],
+                'number' => $i++,
                 'name' => $row['name1'],
                 'description' => $row['text1'],
                 'amountFrom' => $row['price'],
