@@ -92,19 +92,19 @@ class InvoiceHandler
         PayqrLog::log("Установили сумму заказа: ". $total);
 
         //отправка сообщений
-        $module = new PayqrModule();
-        if($module->getOption("message-invoice-order-creating"))
-        {
-            $message = $this->invoice->getMessage();
-            if($message)
-            {
-                $message->article = $module->getOption("message-invoice-order-creating-article");
-                $message->text = $module->getOption("message-invoice-order-creating-text");
-                $message->imageUrl = $module->getOption("message-invoice-order-creating-imageUrl");
-                $message->url = $module->getOption("message-invoice-order-creating-url");
-                $this->invoice->setMessage($message);
-            }
-        }
+        // $module = new PayqrModule();
+        // if($module->getOption("message-invoice-order-creating"))
+        // {
+        //     $message = $this->invoice->getMessage();
+        //     if($message)
+        //     {
+        //         $message->article = $module->getOption("message-invoice-order-creating-article");
+        //         $message->text = $module->getOption("message-invoice-order-creating-text");
+        //         $message->imageUrl = $module->getOption("message-invoice-order-creating-imageUrl");
+        //         $message->url = $module->getOption("message-invoice-order-creating-url");
+        //         $this->invoice->setMessage($message);
+        //     }
+        // }
         
         //сохраняем заказ
         $db = PayqrModuleDb::getInstance();
@@ -246,7 +246,27 @@ class InvoiceHandler
     */
     public function setDeliveryCases()
     {
-        
+        $total = $this->invoice->getAmount();
+
+        $rows = DB::query_fetch_all("SELECT sd.id, sd.name1, sd.text1, sdt.price  
+                                     FROM {shop_delivery} sd 
+                                     LEFT JOIN {shop_delivery_thresholds} sdt ON sd.id=sdt.delivery_id 
+                                     WHERE sd.act='1' AND sd.trash='0' AND sdt.trash='0' AND sdt.amount < %f", $total);
+
+        $delivery_cases = array();
+
+        foreach($rows as $row)
+        {
+            $delivery_cases[] = array(
+                'article' => $row['id'],
+                'name' => $row['name1'],
+                'description' => $row['text1'],
+                'amountFrom' => $row['price'],
+                'amountTo' => $row['price']
+            );
+        }
+
+        $this->invoice->setDeliveryCases($delivery_cases);
     }
     
     /*
