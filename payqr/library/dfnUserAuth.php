@@ -80,7 +80,8 @@ class dfnUserAuth {
         //см. таблицу {users_role}
         if($userId)
         {
-            return DB::query_result("SELECT role_id FROM {users} WHERE user_id=%d", $userId);
+        	PayqrLog::log("SELECT role_id FROM diafan_users WHERE id=".$userId);
+            return DB::query_result("SELECT role_id FROM {users} WHERE id=%d", $userId);
         }
         return 0;
     }
