@@ -69,6 +69,7 @@ class InvoiceHandler
         $order = new PayqrOrder($this->invoice, $this->diafan);
 
         $orderId = $order->createOrder();
+        PayqrLog::log("Создали заказ:" . $orderId);
         
         $this->invoice->setOrderId($orderId);
         

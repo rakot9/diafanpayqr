@@ -36,14 +36,18 @@ class dfnUserAuth {
 	 */
 	public function getUserId($email)
 	{
-		return DB::query_result("SELECT id FROM {users} WHERE mail='%s' LIMIT 1", $email);
+		return DB::query_result("SELECT id FROM {users} WHERE LOWER(mail)='%s' LIMIT 1", strtolower($email));
 	}
 
 	public function CreateUser($email)
 	{
 		$_POST["name"] = $email;
 		$_POST["mail"] = $email;
+		
+		//Пароль 123qwe123
 		$_POST["password"] = "5667a84c6f63b6cbcd87f974c4fc032e";
+		
+		//Пароль 123qwe123
 		$_POST["password2"] = "5667a84c6f63b6cbcd87f974c4fc032e";
 		$_POST["fio"] = "PayQR";
 		$_POST["action"] = "add";

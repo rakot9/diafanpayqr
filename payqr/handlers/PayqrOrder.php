@@ -167,7 +167,7 @@ class PayqrOrder
 
         DB::query("UPDATE {shop_order} SET summ=%f, discount_id=%d, discount_summ=%f WHERE id=%d", $summ, $discount["discount_id"], $discount["discount_summ"], $order_id);
 
-        PayqrLog::log("Возвращаем идентификатор заказа");
+        PayqrLog::log("Возвращаем идентификатор заказа: " . $order_id);
 
         return $order_id;
     }
