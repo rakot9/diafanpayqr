@@ -73,8 +73,11 @@ class InvoiceHandler
         
         $this->invoice->setOrderId($orderId);
         
+        PayqrLog::log("Получаем invoice_id");
         $invoice_id = $this->invoice->getInvoiceId();
         
+        PayqrLog::log("Получили invoice_id: ". $invoice_id);
+
         if($order->getOrderPaidStatus($invoice_id))
         {
             
@@ -83,6 +86,7 @@ class InvoiceHandler
         /**
          * Устанавливаем общую стоимость заказа
          */
+        PayqrLog::log("Устанавливаем сумму заказа");
         $this->invoice->setAmount($order->getTotalAmount());
 
         //отправка сообщений
@@ -123,6 +127,7 @@ class InvoiceHandler
             ),
             array("%s", "%s", "%s", "%s", "%s", "%s")
         );
+        return true;
     }
     
     /**
