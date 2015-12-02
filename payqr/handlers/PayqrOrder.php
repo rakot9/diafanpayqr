@@ -226,6 +226,8 @@ class PayqrOrder
 
         $userRoleId = dfnUserAuth::getInstance($this->diafan)->_dfnGetUserRoleId($userId);
 
+        PayqrLog::log("Получили роль пользователя: " . $userRoleId);
+
         $rows = DB::query_fetch_all("SELECT id, discount, amount, deduction, threshold, threshold_cumulative FROM"
             ." {shop_discount} WHERE act='1' AND trash='0' AND (threshold_cumulative>0 OR threshold>0)"
             ." AND role_id".($userRoleId ? ' IN (0, '.$userRoleId.')' : '=0')

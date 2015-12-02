@@ -80,9 +80,7 @@ class dfnUserAuth {
         //см. таблицу {users_role}
         if($userId)
         {
-            $order_summ = DB::query_result("SELECT * FROM {users} LEFT JOIN {} WHERE user_id=%d AND (status='1' OR status='3')", $userId);
-
-            return 1;
+            return DB::query_result("SELECT role_id FROM {users} WHERE user_id=%d AND act=1", $userId);
         }
         return 0;
     }
