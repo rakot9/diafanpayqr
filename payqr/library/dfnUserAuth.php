@@ -80,7 +80,7 @@ class dfnUserAuth {
         //см. таблицу {users_role}
         if($userId)
         {
-            return DB::query_result("SELECT role_id FROM {users} WHERE user_id=%d AND act=1", $userId);
+            return DB::query_result("SELECT role_id FROM {users} WHERE user_id=%d", $userId);
         }
         return 0;
     }
