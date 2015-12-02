@@ -75,7 +75,7 @@ class dfnUserAuth {
      * @var int userId
      * @return int
      */
-    private function _dfnGetUserRoleId($userId)
+    public function _dfnGetUserRoleId($userId)
     {
         //см. таблицу {users_role}
         if($userId)
