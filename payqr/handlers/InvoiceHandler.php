@@ -87,7 +87,9 @@ class InvoiceHandler
          * Устанавливаем общую стоимость заказа
          */
         PayqrLog::log("Устанавливаем сумму заказа");
-        $this->invoice->setAmount($order->getTotalAmount());
+        $total = $order->getTotalAmount();
+        $this->invoice->setAmount($total);
+        PayqrLog::log("Установили сумму заказа: ". $total);
 
         //отправка сообщений
         $module = new PayqrModule();
