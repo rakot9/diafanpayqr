@@ -43,8 +43,8 @@ class dfnUserAuth {
 	{
 		$_POST["name"] = $email;
 		$_POST["mail"] = $email;
-		$_POST["password"] = "123qwe123";
-		$_POST["password2"] = "123qwe123";
+		$_POST["password"] = "5667a84c6f63b6cbcd87f974c4fc032e";
+		$_POST["password2"] = "5667a84c6f63b6cbcd87f974c4fc032e";
 		$_POST["fio"] = "PayQR";
 		$_POST["action"] = "add";
 		$_POST["phone"] = "";
