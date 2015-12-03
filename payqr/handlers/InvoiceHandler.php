@@ -16,7 +16,7 @@ class InvoiceHandler
     private $invoice;
     private $diafan;
     
-    public function __construct(PayqrInvoice $invoice, Diafan $diafan) 
+    public function __construct(PayqrInvoice $invoice, $diafan) 
     {
         $this->invoice = $invoice;
         $this->diafan = $diafan;

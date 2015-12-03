@@ -19,9 +19,9 @@ class PayqrOrder
 
     /**
      * @param PayqrInvoice $invoice
-     * @param Diafan $diafan
+     * @param $diafan
      */
-    public function __construct(PayqrInvoice &$invoice, Diafan $diafan)
+    public function __construct(PayqrInvoice &$invoice, $diafan)
     {
         $this->invoice = $invoice;
         $this->customerData = $invoice->getCustomer();
@@ -109,7 +109,7 @@ class PayqrOrder
         $params = $cart->model->get_params(array("module" => "shop", "table" => "shop_order", "where" => "show_in_form='1'", "fields" => "info"));
 
         PayqrLog::log("Получили параметры params: " . print_r($params, true));
-        PayqrLog::log("Получили параметры unserialize(params): " . print_r(unserialize($params), true));
+        //PayqrLog::log("Получили параметры unserialize(params): " . print_r(unserialize($params), true));
 
         $status_id = DB::query_result("SELECT id FROM {shop_order_status} WHERE status='0' LIMIT 1");
 
@@ -126,28 +126,32 @@ class PayqrOrder
 
         // товары
         $goods_summ = $summ = 0;
-
         foreach($this->invoice->getCart() as $product)
         {
             $shop_good_id = DB::query("INSERT INTO {shop_order_goods} (order_id, good_id, count_goods) VALUES (%d, %d, %f)", $order_id, (int)$product->article, (int)$product->quantity);
 
             PayqrLog::log("Вставили товар и получили идентификатор товара в {shop_order_goods}: " . $shop_good_id);
 
-            $price = $select_depend = 0;
+            // $price = $select_depend = 0;
 
-            $sparams = unserialize($param);
+            // if(is_string($params))
+            // {
 
-            foreach ($sparams as $id => $value)
-            {
-                DB::query("INSERT INTO {shop_order_goods_param} (order_goods_id, value, param_id) VALUES ('%d', '%d', '%d')", $shop_good_id, $value, $id);
-            }    
-            $row = $this->diafan->_shop->price_get((int)$product->article, $sparams);
+            //     $sparams = unserialize($params);
 
-            PayqrLog::log("Получили информацию по цене товара: " . print_r($row, true));
+            //     foreach ($sparams as $id => $value)
+            //     {
+            //         DB::query("INSERT INTO {shop_order_goods_param} (order_goods_id, value, param_id) VALUES ('%d', '%d', '%d')", $shop_good_id, $value, $id);
+            //     }    
+            //     $row = $this->diafan->_shop->price_get((int)$product->article, $sparams);
 
-            DB::query("UPDATE {shop_order_goods} SET price=%f, discount_id=%d WHERE id=%d", $row["price"], $row["discount_id"], $shop_good_id);
+            //     PayqrLog::log("Получили информацию по цене товара: " . print_r($row, true));
 
-            $goods_summ += $row["price"] * (int)$product->quantity;
+            //     DB::query("UPDATE {shop_order_goods} SET price=%f, discount_id=%d WHERE id=%d", $row["price"], $row["discount_id"], $shop_good_id);
+
+            //     $goods_summ += $row["price"] * (int)$product->quantity;
+            // }
+            $goods_summ += (float)$product->amount;
         }
         $summ += $goods_summ;
         
