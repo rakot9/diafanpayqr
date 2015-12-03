@@ -116,7 +116,7 @@ class PayqrOrder
         PayqrLog::log("Создали заказ: " . $order_id);
 
         // товары
-        $goods_summ = $summ = $this->invoice->getTotalAmount();
+        $goods_summ = $summ = $this->getTotalAmount();
 
         foreach($this->invoice->getCart() as $product)
         {
