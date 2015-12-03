@@ -14,7 +14,8 @@ try
     define('BASE_PATH', "http".(! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? "s" : '')."://".getenv("HTTP_HOST")."/".(REVATIVE_PATH ? REVATIVE_PATH.'/' : ''));
     define('ABSOLUTE_PATH', dirname(__FILE__).'/../');
     define('BASE_PATH_HREF', BASE_PATH . "registration/");
-    define('BASE_URL', ($domain ? $domain : getenv("HTTP_HOST")).(REVATIVE_PATH ? '/'.REVATIVE_PATH : ''));
+    //define('BASE_URL', ($domain ? $domain : getenv("HTTP_HOST")).(REVATIVE_PATH ? '/'.REVATIVE_PATH : ''));
+    define('BASE_URL', getenv("HTTP_HOST") . (REVATIVE_PATH ? '/'.REVATIVE_PATH : ''));
 
     include_once ABSOLUTE_PATH.'includes/custom.php';
     include_once(ABSOLUTE_PATH.'includes/developer.php');
