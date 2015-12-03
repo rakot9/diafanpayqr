@@ -93,7 +93,7 @@ class InvoiceHandler
          * Получаем стоимость доставки
          */
         $delivery = 0;
-        $deliverySelected = $this->invoice->getDelivery();
+        $deliverySelected = $this->invoice->getDeliveryCasesSelected();
         if(isset($deliverySelected, $deliverySelected->amountFrom) && !empty($deliverySelected->amountFrom))
         {
             $delivery = round((float)$deliverySelected->amountFrom, 2);
