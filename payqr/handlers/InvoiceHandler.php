@@ -88,23 +88,36 @@ class InvoiceHandler
          */
         PayqrLog::log("Устанавливаем сумму заказа");
         $total = $order->getTotalAmount();
-        $this->invoice->setAmount($total);
-        PayqrLog::log("Установили сумму заказа: ". $total);
+
+        /**
+         * Получаем стоимость доставки
+         */
+        $delivery = 0;
+        $deliverySelected = $this->invoice->getDelivery();
+        if(isset($deliverySelected, $deliverySelected->amountFrom) && !empty($deliverySelected->amountFrom))
+        {
+            $delivery = round((float)$deliverySelected->amountFrom, 2);
+        }
+
+
+        $this->invoice->setAmount(round($total + $delivery, 2) );
+
+        PayqrLog::log("Установили сумму заказа вместе с доставкой: ". $total . "+" . $delivery. " = ". ($total+$delivery));
 
         //отправка сообщений
-        // $module = new PayqrModule();
-        // if($module->getOption("message-invoice-order-creating"))
-        // {
-        //     $message = $this->invoice->getMessage();
-        //     if($message)
-        //     {
-        //         $message->article = $module->getOption("message-invoice-order-creating-article");
-        //         $message->text = $module->getOption("message-invoice-order-creating-text");
-        //         $message->imageUrl = $module->getOption("message-invoice-order-creating-imageUrl");
-        //         $message->url = $module->getOption("message-invoice-order-creating-url");
-        //         $this->invoice->setMessage($message);
-        //     }
-        // }
+        $module = new PayqrModule();
+        if($module->getOption("message-invoice-order-creating"))
+        {
+            $message = $this->invoice->getMessage();
+            if($message)
+            {
+                $message->article = $module->getOption("message-invoice-order-creating-article");
+                $message->text = $module->getOption("message-invoice-order-creating-text");
+                $message->imageUrl = $module->getOption("message-invoice-order-creating-imageUrl");
+                $message->url = $module->getOption("message-invoice-order-creating-url");
+                $this->invoice->setMessage($message);
+            }
+        }
         
         //сохраняем заказ
         $db = PayqrModuleDb::getInstance();
