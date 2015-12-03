@@ -91,15 +91,6 @@ class PayqrOrder
         /**
          * Создаем заказ на основе корзины
          */
-        // foreach($this->invoice->getCart() as $product)
-        // {
-        //     $product->amount;
-        //     $product->article;
-        //     $product->name;
-        //     $product->imageURL;
-        //     $product->quantity;
-        // }
-
         //создаем заказ
         $this->diafan->_site->module = 'cart';
         $this->diafan->current_module = 'cart';
@@ -125,35 +116,14 @@ class PayqrOrder
         PayqrLog::log("Создали заказ: " . $order_id);
 
         // товары
-        $goods_summ = $summ = 0;
+        $goods_summ = $summ = $this->invoice->getTotalAmount();
+
         foreach($this->invoice->getCart() as $product)
         {
             $shop_good_id = DB::query("INSERT INTO {shop_order_goods} (order_id, good_id, count_goods) VALUES (%d, %d, %f)", $order_id, (int)$product->article, (int)$product->quantity);
 
             PayqrLog::log("Вставили товар и получили идентификатор товара в {shop_order_goods}: " . $shop_good_id);
-
-            // $price = $select_depend = 0;
-
-            // if(is_string($params))
-            // {
-
-            //     $sparams = unserialize($params);
-
-            //     foreach ($sparams as $id => $value)
-            //     {
-            //         DB::query("INSERT INTO {shop_order_goods_param} (order_goods_id, value, param_id) VALUES ('%d', '%d', '%d')", $shop_good_id, $value, $id);
-            //     }    
-            //     $row = $this->diafan->_shop->price_get((int)$product->article, $sparams);
-
-            //     PayqrLog::log("Получили информацию по цене товара: " . print_r($row, true));
-
-            //     DB::query("UPDATE {shop_order_goods} SET price=%f, discount_id=%d WHERE id=%d", $row["price"], $row["discount_id"], $shop_good_id);
-
-            //     $goods_summ += $row["price"] * (int)$product->quantity;
-            // }
-            $goods_summ += (float)$product->amount;
         }
-        $summ += $goods_summ;
         
         PayqrLog::log("Получили итоговую сумму заказа: " . $goods_summ);
 
@@ -242,7 +212,7 @@ class PayqrOrder
             time(), time(), $order_summ, $cart_summ
         );
 
-        PayqrLog::log("После получения скидки: ", print_r($row, true));
+        PayqrLog::log("После получения скидки: ", print_r($rows, true));
 
         foreach ($rows as $row)
         {
