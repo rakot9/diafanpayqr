@@ -283,4 +283,13 @@ class PayqrOrder
         $invoice = $db->select("select * from ".PayqrModuleDb::getInvoiceTable()." where invoice_id=?", array($invoice_id), array("s"));
         return $invoice;
     }
+
+    /**
+     * @param int $order_id
+     * 
+     */
+    public function updateDeliverySumm($order_id, $delivery_id, $delivery_summ)
+    {
+        DB::query("UPDATE {shop_order} set delivery_summ=%f, delivery_id=%d WHERE id=%d", $delivery_summ, $delivery_id, $order_id);
+    }
 }

@@ -97,6 +97,8 @@ class InvoiceHandler
         if(isset($deliverySelected, $deliverySelected->amountFrom) && !empty($deliverySelected->amountFrom))
         {
             $delivery = round((float)$deliverySelected->amountFrom, 2);
+
+            $order->updateDeliverySumm($orderId, $deliverySelected->article, $delivery);
         }
 
 
