@@ -137,7 +137,7 @@ class PayqrOrder
 
         PayqrLog::log("Получили скидки: " . print_r($discount, true));
 
-        DB::query("UPDATE {shop_order} SET summ=%f, discount_id=%d, discount_summ=%f WHERE id=%d", $goods_summ, $discount["discount_id"], $discount["discount_summ"], $order_id);
+        DB::query("UPDATE {shop_order} SET summ=%f, discount_id=%d, discount_summ=%f WHERE id=%d", ($goods_summ - $discount["discount_summ"]), $discount["discount_id"], $discount["discount_summ"], $order_id);
 
         return $order_id;
     }
