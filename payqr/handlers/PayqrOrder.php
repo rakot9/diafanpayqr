@@ -16,6 +16,7 @@ class PayqrOrder
     private $invoice;
     private $customerData;
     private $diafan;
+    private $deliveryData;
 
     /**
      * @param PayqrInvoice $invoice
@@ -26,6 +27,7 @@ class PayqrOrder
         $this->invoice = $invoice;
         $this->customerData = $invoice->getCustomer();
         $this->diafan = $diafan;
+        $this->deliveryData = $invoice->getDelivery();
     }
 
     /**
@@ -76,10 +78,7 @@ class PayqrOrder
 
         if(!$userId)
         {
-            PayqrLog::log("Не смогли получить информацию о пользвателе");
-
             $userId = dfnUserAuth::getInstance($this->diafan)->CreateUser($this->customerData->email);
-
             /**
             * создаем пользователя
             */
@@ -91,7 +90,6 @@ class PayqrOrder
         /**
          * Создаем заказ на основе корзины
          */
-        //создаем заказ
         $this->diafan->_site->module = 'cart';
         $this->diafan->current_module = 'cart';
         Custom::inc('modules/cart/cart.php');
@@ -99,12 +97,7 @@ class PayqrOrder
 
         $params = $cart->model->get_params(array("module" => "shop", "table" => "shop_order", "where" => "show_in_form='1'", "fields" => "info"));
 
-        PayqrLog::log("Получили параметры params: " . print_r($params, true));
-        //PayqrLog::log("Получили параметры unserialize(params): " . print_r(unserialize($params), true));
-
         $status_id = DB::query_result("SELECT id FROM {shop_order_status} WHERE status='0' LIMIT 1");
-
-        PayqrLog::log("Получили статус заказа: " . $status_id);
 
         $order_id = DB::query("INSERT INTO {shop_order} (user_id, created, status, status_id, lang_id) VALUES (%d, %d, '0', %d, %d)",
             $userId,
@@ -130,8 +123,6 @@ class PayqrOrder
 
         }
         
-        PayqrLog::log("Получили итоговую сумму заказа: " . $goods_summ);
-
         if($discount = $this->get_discount_total($goods_summ, $userId))
         {
             $summ -= $discount["discount_summ"];
@@ -145,8 +136,6 @@ class PayqrOrder
         PayqrLog::log("Получили скидки: " . print_r($discount, true));
 
         DB::query("UPDATE {shop_order} SET summ=%f, discount_id=%d, discount_summ=%f WHERE id=%d", $summ, $discount["discount_id"], $discount["discount_summ"], $order_id);
-
-        PayqrLog::log("Возвращаем идентификатор заказа: " . $order_id);
 
         return $order_id;
     }
@@ -291,5 +280,113 @@ class PayqrOrder
     public function updateDeliverySumm($order_id, $delivery_id, $delivery_summ)
     {
         DB::query("UPDATE {shop_order} set delivery_summ=%f, delivery_id=%d, summ=summ+%f WHERE id=%d", $delivery_summ, $delivery_id, $delivery_summ, $order_id);
+    }
+
+    /**
+     * Метод устанавливает данные пользователя
+     * 
+     */
+    public function setUserOrderData($order_id)
+    {
+        $diafanOrderParams = array();
+
+        $orderParams = DB::query_fetch_all("SELECT * FROM {shop_order_param} WHERE trash=0");
+
+        foreach ($orderParams as $param)
+        {
+            $diafanOrderParams[$param["info"]] = $param["id"];
+        }
+
+        /*
+        * Заполняем email пользователя
+        */
+        if(isset($this->customerData->email, $diafanOrderParams["email"]) && !empty($this->customerData->email))
+        {
+            DB::query("UPDATE {shop_order_param_element} SET value=%s, param_id=%d, element_id=%d", $this->customerData->email, $diafanOrderParams["email"], $order_id);
+        }
+
+        /*
+        * 
+        */
+        if(isset($diafanOrderParams["name"]) && !empty($diafanOrderParams["name"]))
+        {
+            $userName = "";
+
+            if(isset($this->customerData->lastName) && !empty($this->customerData->lastName))
+            {
+                $userName .= $this->customerData->lastName;
+            }
+
+            if(isset($this->customerData->firstName) && !empty($this->customerData->firstName))
+            {
+                $userName .= " ". $this->customerData->firstName;
+            }
+
+            if(isset($this->customerData->middleName) && !empty($this->customerData->middleName))
+            {
+                $userName .= " ". $this->customerData->middleName;
+            }
+
+            if(!empty($userName))
+            {
+                DB::query("UPDATE {shop_order_param_element} SET value=%s, param_id=%d, element_id=%d", $userName, $diafanOrderParams["name"], $order_id);
+            }
+        }
+
+        /*
+        * 
+        */
+        if(isset($diafanOrderParams["phone"], $this->customerData->phone) && !empty($this->customerData->phone))
+        {
+            DB::query("UPDATE {shop_order_param_element} SET value=%s, param_id=%d, element_id=%d", $this->customerData->phone, $diafanOrderParams["phone"], $order_id);
+        }
+
+        /*
+        * 
+        */
+        if(isset($diafanOrderParams["zip"], $this->deliveryData->zip) && !empty($this->deliveryData->zip))
+        {
+            DB::query("UPDATE {shop_order_param_element} SET value=%s, param_id=%d, element_id=%d", $this->deliveryData->zip, $diafanOrderParams["zip"], $order_id);
+        }
+
+        /*
+        * 
+        */
+        if(isset($this->deliveryData->city, $diafanOrderParams["city"]) && !empty($this->deliveryData->city))
+        {
+            DB::query("UPDATE {shop_order_param_element} SET value=%s, param_id=%d, element_id=%d", $this->deliveryData->city, $diafanOrderParams["city"], $order_id);
+        }
+
+        /*
+        * 
+        */
+        if(isset($this->deliveryData->street, $diafanOrderParams["street"]) && !empty($this->deliveryData->street))
+        {
+            DB::query("UPDATE {shop_order_param_element} SET value=%s, param_id=%d, element_id=%d", $this->deliveryData->street, $diafanOrderParams["street"], $order_id);
+        }
+
+        /*
+        * 
+        */
+        if(isset($this->deliveryData->house, $diafanOrderParams["building"]) && !empty($this->deliveryData->house))
+        {
+            DB::query("UPDATE {shop_order_param_element} SET value=%s, param_id=%d, element_id=%d", $this->deliveryData->house, $diafanOrderParams["building"], $order_id);
+        }
+
+        /*
+        * 
+        */
+        if(isset($this->deliveryData->unit, $diafanOrderParams["suite"]) && !empty($this->deliveryData->unit))
+        {
+            DB::query("UPDATE {shop_order_param_element} SET value=%s, param_id=%d, element_id=%d", $this->deliveryData->unit, $diafanOrderParams["suite"], $order_id);
+        }
+
+        /*
+        * 
+        */
+        if(isset($this->deliveryData->flat, $diafanOrderParams["flat"]) && !empty($this->deliveryData->flat))
+        {
+            DB::query("UPDATE {shop_order_param_element} SET value=%s, param_id=%d, element_id=%d", $this->deliveryData->flat, $diafanOrderParams["flat"], $order_id);
+        }
     }
 }

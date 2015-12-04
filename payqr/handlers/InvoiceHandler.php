@@ -90,6 +90,11 @@ class InvoiceHandler
         $total = $order->getTotalAmount();
 
         /**
+         * Устанавливаем пользовательские данные
+         */
+        $order->setUserOrderData($orderId);
+
+        /**
          * Получаем стоимость доставки
          */
         $delivery = 0;
