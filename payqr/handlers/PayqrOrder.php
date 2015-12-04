@@ -109,7 +109,8 @@ class PayqrOrder
         PayqrLog::log("Создали заказ: " . $order_id);
 
         // товары
-        $goods_summ = $summ = $this->getTotalAmount();
+        $goods_summ = 0;
+        $summ = $this->getTotalAmount();
 
         foreach($this->invoice->getCart() as $product)
         {
@@ -121,6 +122,7 @@ class PayqrOrder
 
             DB::query("UPDATE {shop_order_goods} SET price=%f, discount_id=%d WHERE id=%d", $row["price"], $row["discount_id"], $shop_good_id);
 
+            $goods_summ += round((float)$row["price"] * (int)$product->quantity , 2);
         }
         
         if($discount = $this->get_discount_total($goods_summ, $userId))
@@ -135,7 +137,7 @@ class PayqrOrder
 
         PayqrLog::log("Получили скидки: " . print_r($discount, true));
 
-        DB::query("UPDATE {shop_order} SET summ=%f, discount_id=%d, discount_summ=%f WHERE id=%d", $summ, $discount["discount_id"], $discount["discount_summ"], $order_id);
+        DB::query("UPDATE {shop_order} SET summ=%f, discount_id=%d, discount_summ=%f WHERE id=%d", $goods_summ, $discount["discount_id"], $discount["discount_summ"], $order_id);
 
         return $order_id;
     }
