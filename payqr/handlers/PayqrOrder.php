@@ -290,7 +290,7 @@ class PayqrOrder
     {
         $diafanOrderParams = array();
 
-        $orderParams = DB::query_fetch_all("SELECT * FROM {shop_order_param} WHERE trash=0");
+        $orderParams = DB::query_fetch_all("SELECT * FROM {shop_order_param} WHERE trash='0'");
 
         foreach ($orderParams as $param)
         {
@@ -302,7 +302,7 @@ class PayqrOrder
         */
         if(isset($this->customerData->email, $diafanOrderParams["email"]) && !empty($this->customerData->email))
         {
-            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $this->customerData->email, $diafanOrderParams["email"], $order_id, 0);
+            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, '%s')", $this->customerData->email, $diafanOrderParams["email"], $order_id, '0');
         }
 
         /*
@@ -329,7 +329,7 @@ class PayqrOrder
 
             if(!empty($userName))
             {
-                DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $userName, $diafanOrderParams["name"], $order_id, 0);
+                DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, '%s')", $userName, $diafanOrderParams["name"], $order_id, '0');
             }
         }
 
@@ -338,7 +338,7 @@ class PayqrOrder
         */
         if(isset($diafanOrderParams["phone"], $this->customerData->phone) && !empty($this->customerData->phone))
         {
-            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $this->customerData->phone, $diafanOrderParams["phone"], $order_id, 0);
+            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, '%s')", $this->customerData->phone, $diafanOrderParams["phone"], $order_id, '0');
         }
 
         /*
@@ -346,7 +346,7 @@ class PayqrOrder
         */
         if(isset($diafanOrderParams["zip"], $this->deliveryData->zip) && !empty($this->deliveryData->zip))
         {
-            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $this->deliveryData->zip, $diafanOrderParams["zip"], $order_id, 0);
+            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, '%s')", $this->deliveryData->zip, $diafanOrderParams["zip"], $order_id, '0');
         }
 
         /*
@@ -354,7 +354,7 @@ class PayqrOrder
         */
         if(isset($this->deliveryData->city, $diafanOrderParams["city"]) && !empty($this->deliveryData->city))
         {
-            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $this->deliveryData->city, $diafanOrderParams["city"], $order_id, 0);
+            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, '%s')", $this->deliveryData->city, $diafanOrderParams["city"], $order_id, '0');
         }
 
         /*
@@ -362,7 +362,7 @@ class PayqrOrder
         */
         if(isset($this->deliveryData->street, $diafanOrderParams["street"]) && !empty($this->deliveryData->street))
         {
-            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $this->deliveryData->street, $diafanOrderParams["street"], $order_id, 0);
+            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, '%s')", $this->deliveryData->street, $diafanOrderParams["street"], $order_id, '0');
         }
 
         /*
