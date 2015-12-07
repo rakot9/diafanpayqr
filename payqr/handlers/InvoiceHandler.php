@@ -180,6 +180,17 @@ class InvoiceHandler
                 $this->invoice->setMessage($message);
             }
         }
+
+        $order_id = $this->invoice->getOrderId();
+
+        if(!empty($order_id))
+        {
+            //получаем статус заказа "в обработке"
+            $status_id = DB::query_result("SELECT id FROM {shop_order_status} WHERE status='1' LIMIT 1");
+            
+            //меняем статус заказа
+            DB::query("UPDATE {shop_order} set status_id=%d WHERE id=%d", $status_id, $order_id);
+        }
     }
     
     /*
@@ -222,7 +233,16 @@ class InvoiceHandler
     */
     public function cancelOrder()
     {
-        
+        $order_id = $this->invoice->getOrderId();
+
+        if(!empty($order_id))
+        {
+            //получаем статус заказа "в обработке"
+            $status_id = DB::query_result("SELECT id FROM {shop_order_status} WHERE status='2' LIMIT 1");
+            
+            //меняем статус заказа
+            DB::query("UPDATE {shop_order} set status_id=%d WHERE id=%d", $status_id, $order_id);
+        }
     }
     
     /*
