@@ -107,7 +107,7 @@ class InvoiceHandler
         }
 
 
-        $this->invoice->setAmount(round($total + $delivery, 2) );
+        $this->invoice->setAmount(round($total + $delivery) );
 
         PayqrLog::log("Установили сумму заказа вместе с доставкой: ". $total . "+" . $delivery. " = ". ($total+$delivery));
 
