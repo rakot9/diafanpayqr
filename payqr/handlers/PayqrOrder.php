@@ -281,7 +281,7 @@ class PayqrOrder
      */
     public function updateDeliverySumm($order_id, $delivery_id, $delivery_summ)
     {
-        DB::query("UPDATE {shop_order} set delivery_summ=%f, delivery_id=%d, summ=summ+%f WHERE id=%d", $delivery_summ, $delivery_id, $delivery_summ, $order_id);
+        DB::query("UPDATE {shop_order} set delivery_summ=%f, delivery_id=%d, summ=ROUND(summ+%f) WHERE id=%d", $delivery_summ, $delivery_id, $delivery_summ, $order_id);
     }
 
     /**
