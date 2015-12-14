@@ -8,6 +8,14 @@
 
 class PayqrModuleDb 
 {
+    public static function setConfig($db)
+    {
+        PayqrModuleDbConfig::$username = $db["username"];
+        PayqrModuleDbConfig::$password = $db["password"];
+        PayqrModuleDbConfig::$database = $db["database"];
+        PayqrModuleDbConfig::$host = $db["host"];
+        PayqrModuleDbConfig::$prefix = $db["prefix"];
+    }
     public static function getUserTable()
     {
         return PayqrModuleDbConfig::$prefix . "payqr_user";

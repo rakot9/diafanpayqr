@@ -63,6 +63,8 @@ class PayqrCurl extends PayqrRequest
             case self::GET:
                 curl_setopt($this->request, CURLOPT_HTTPGET, true);
                 break;
+            case self::POST:
+                curl_setopt($this->request, CURLOPT_POST, true);
             case self::PUT:
                 curl_setopt($this->request, CURLOPT_POST, true);
                 break;

@@ -14,11 +14,19 @@
 class PayqrButtonGenerator 
 {
     private $scenario = "buy";
-    
     private $type_cart = "cart";
     private $type_product = "product";
     private $type_category = "category";
-    
+
+    private $products;
+    private $amount;
+
+    public function __construct($products=array(), $amount=0)
+    {
+        $this->products = $products;
+        $this->amount = $amount;
+    }
+
     /**
     * Возвращает код скрипта PayQR для размещения в head интернет-сайта
     */
@@ -27,26 +35,29 @@ class PayqrButtonGenerator
       return '<script src="https://payqr.ru/popup.js?merchId=' . $this->getOption("merchantID") . '"></script>';
     }
     
-    public function getCartButton($products = array())
+    public function getCartButton()
     {
         if($this->getOption("button-show-on-cart"))
         {
+            $products = $this->products;
             return $this->get_button_html($this->scenario, $products, $this->type_cart);
         }
     }
 
-    public function getProductButton($products = array())
+    public function getProductButton()
     {
         if($this->getOption("button-show-on-product"))
         {
+            $products = $this->products;
             return $this->get_button_html($this->scenario, $products, $this->type_product);
         }
     }
 
-    public function getCategoryButton($products = array())
+    public function getCategoryButton()
     {
         if($this->getOption("button-show-on-category"))
         {
+            $products = $this->products;
             return $this->get_button_html($this->scenario, $products, $this->type_category);
         }
     }
@@ -92,6 +103,10 @@ class PayqrButtonGenerator
         foreach ($cart_data as $item) {
             $data_amount += $item['amount'];
         }
+        if($this->amount != 0)
+        {
+            $data_amount = $this->amount;
+        }
         $data['data-amount'] = $data_amount;
         $data['data-cart'] = json_encode($cart_data);
         $data['data-firstname-required'] = $this->getOption('data-firstname-required');
@@ -106,10 +121,18 @@ class PayqrButtonGenerator
         //$data['data-promocard-required'] = $this->getOption('data-promocard-required');
         //$data['data-promocode-details'] = json_encode(array($this->getOption('data-promocode-details-article'), $this->getOption('data-promocode-details-description')));
         //$data['data-promocard-details'] = json_encode(array($this->getOption('data-promocard-details-article'), $this->getOption('data-promocard-details-description')));
+        if(!empty($this->getOption('data-promocode-details-article')) || !empty($this->getOption('data-promocode-details-description')))
+        {
+            $data['data-promocode-details'] = json_encode(array($this->getOption('data-promocode-details-article'), $this->getOption('data-promocode-details-description')));
+        }
+        if(!empty($this->getOption('data-promocard-details-article') || !empty($this->getOption('data-promocard-details-description'))))
+        {
+            $data['data-promocard-details'] = json_encode(array($this->getOption('data-promocard-details-article'), $this->getOption('data-promocard-details-description')));
+        }
         $userdata = array(
             "custom" => $this->getOption("data-userdata"),
         );
-        //$data['data-userdata'] = json_encode(array($userdata));
+        $data['data-userdata'] = json_encode(array($userdata));
         $button_style = $this->get_button_style($type);
         $data['class'] = $button_style['class'];
         $data['style'] = $button_style['style'];
