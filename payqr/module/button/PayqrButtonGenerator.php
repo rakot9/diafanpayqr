@@ -32,7 +32,8 @@ class PayqrButtonGenerator
     */
     public function getJs()
     {
-      return '<script src="https://payqr.ru/popup.js?merchId=' . $this->getOption("merchantID") . '"></script>';
+      return '<script src="https://payqr.ru/popup.js?merchId=' . $this->getOption("merchantID") . '"></script>' . PHP_EOL .
+             '<script src="http://'.$_SERVER['SERVER_NAME'].'/payqr/diafanpayqr.js">';
     }
     
     public function getCartButton()
