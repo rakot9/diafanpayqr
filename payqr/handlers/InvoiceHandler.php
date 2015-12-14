@@ -212,7 +212,9 @@ class InvoiceHandler
     * Получить orderId из объекта "Счет на оплату", по которому произошло событие, можно через $this->invoice->getOrderId();
     */ 
     public function revertOrder()
-    {        
+    {
+        PayqrLog::log("revertOrder");
+
         //отправка сообщений
         $module = new PayqrModule();
         if($module->getOption("message-invoice-reverted"))

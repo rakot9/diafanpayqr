@@ -120,6 +120,8 @@ class PayqrOrder
 
             $row = $this->diafan->_shop->price_get((int)$product->article, array());
 
+            PayqrLog::log("Получили цену товара:" . print_r($row, true));
+
             DB::query("UPDATE {shop_order_goods} SET price=%f, discount_id=%d WHERE id=%d", $row["price"], $row["discount_id"], $shop_good_id);
 
             $goods_summ += round((float)$row["price"] * (int)$product->quantity , 2);
@@ -137,22 +139,18 @@ class PayqrOrder
 
         PayqrLog::log("Получили скидки: " . print_r($discount, true));
 
+        PayqrLog::log("Устанавливаем цену: ". $goods_summ . "-" . $discount["discount_summ"] . " для заказа:" . $order_id);
+
         DB::query("UPDATE {shop_order} SET summ=%f, discount_id=%d, discount_summ=%f WHERE id=%d", ($goods_summ - $discount["discount_summ"]), $discount["discount_id"], $discount["discount_summ"], $order_id);
 
         return $order_id;
     }
 
-    /**
-     * Производим актуализацию корзины
-     * производится изменение: стоимости позиции, названия товара и URL картинки
-     * @return
-     * 
-     */
     private function _dfnActualizeCart()
     {
         foreach($this->invoice->getCart() as $product)
         {
-            if(empty($product->article) || empty(((int)$product->article)))
+            if(empty($product->article) || empty((int)$product->article))
             {
                 continue;
             }
@@ -169,11 +167,11 @@ class PayqrOrder
             $product->name = !empty($name)? $name : $product->name;
         }
     }
-    
+
     /**
-     * Получает скидку от общей суммы товаров
-     *
-     * @return float
+     * @param $cart_summ
+     * @param null $userId
+     * @return bool
      */
     private function get_discount_total($cart_summ, $userId = null)
     {
@@ -276,8 +274,9 @@ class PayqrOrder
     }
 
     /**
-     * @param int $order_id
-     * 
+     * @param $order_id
+     * @param $delivery_id
+     * @param $delivery_summ
      */
     public function updateDeliverySumm($order_id, $delivery_id, $delivery_summ)
     {
