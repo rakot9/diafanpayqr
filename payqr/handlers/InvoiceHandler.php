@@ -215,6 +215,23 @@ class InvoiceHandler
     {
         PayqrLog::log("revertOrder");
 
+        $order_id = $this->invoice->getOrderId();
+
+        PayqrLog::log("revertOrder получили номер заказа: ". $order_id);
+
+        if(!empty($order_id))
+        {
+            //получаем статус заказа "в обработке"
+            $status_id = DB::query_result("SELECT id FROM {shop_order_status} WHERE status='2' LIMIT 1");
+
+            PayqrLog::log("cancelOrder получили статус заказа 'Отменен': " . $status_id);
+
+            //меняем статус заказа
+            DB::query("UPDATE {shop_order} set status_id=%d WHERE id=%d", $status_id, $order_id);
+
+            PayqrLog::log("cancelOrder произвели обновление статуса заказа: ");
+        }
+
         //отправка сообщений
         $module = new PayqrModule();
         if($module->getOption("message-invoice-reverted"))
