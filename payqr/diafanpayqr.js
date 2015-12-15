@@ -8,6 +8,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
             try{
                 payqrUserData = $.parseJSON(data.userData);
 
+                //прикручиваем скрипт очистки корзины
+                $.get("payqr/payqr_config.php", function(data){
+                    console.log('Отправили информацию об очистке корзины');
+                });
+                //
+
                 if(typeof payqrUserData !== "undefined" && typeof payqrUserData.new_account !== "undefined" &&
                     (payqrUserData.new_account == true || payqrUserData.new_account == "true"))
                 {
