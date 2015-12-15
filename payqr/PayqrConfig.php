@@ -45,4 +45,12 @@ class PayqrConfig
         $basepath = realpath($basepath) . "/";
         return $basepath;
     }
+
+    public static function setConfig()
+    {
+        $module = new PayqrModule();
+        PayqrConfig::$merchantID = $module->getOption("merchantID");
+        PayqrConfig::$secretKeyIn = $module->getOption("secretKeyIn");
+        PayqrConfig::$secretKeyOut = $module->getOption("secretKeyOut");
+    }
 }
