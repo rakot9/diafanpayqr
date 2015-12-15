@@ -24,11 +24,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
                 redirectUrl = window.location.origin;
 
-                if(typeof payqrUserData !== "undefined" && typeof payqrUserData.cart_id !== "undefined" && parseInt(payqrUserData.cart_id))
-                {
-                    redirectUrl += "/?id=" + payqrUserData.cart_id + "&shk_action=empty";
-                }
-
                 window.location.replace( redirectUrl );
             }
             catch(e)
