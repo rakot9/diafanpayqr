@@ -1,6 +1,6 @@
 var checkReady = function(callback) {
     if (window.jQuery) {
-        callback(jQuery);
+        //callback(jQuery);
     }
     else {
         window.setTimeout(function() { checkReady(callback); }, 100);
