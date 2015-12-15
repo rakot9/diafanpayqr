@@ -1,53 +1,35 @@
-(function() {
-    // Poll for jQuery to come into existance
-    var checkReady = function(callback) {
-        if (window.jQuery) {
-            callback(jQuery);
-        }
-        else {
-            window.setTimeout(function() { checkReady(callback); }, 100);
-        }
-    };
+$(function() {
+    if(typeof payQR  !== "undefined")
+    {
+        payQR.onPaid(function(data) {
 
-    // Start polling...
-    checkReady(function($) {
+            var message = "Ваш заказ #" + data.orderId + " успешно оплачен на сумму: " + data.amount + "! ";
 
-        console.log("checkReady function");
+            try{
+                payqrUserData = $.parseJSON(data.userData);
 
-        $(function() {
-            if(typeof payQR  !== "undefined")
-            {
-                payQR.onPaid(function(data) {
+                if(typeof payqrUserData !== "undefined" && typeof payqrUserData.new_account !== "undefined" &&
+                    (payqrUserData.new_account == true || payqrUserData.new_account == "true"))
+                {
+                    message += " Администратор сайта свяжется с вами в самое ближайшее время!";
+                }
 
-                    var message = "Ваш заказ #" + data.orderId + " успешно оплачен на сумму: " + data.amount + "! ";
+                alert(message);
 
-                    try{
-                        payqrUserData = $.parseJSON(data.userData);
+                redirectUrl = window.location.origin;
 
-                        if(typeof payqrUserData !== "undefined" && typeof payqrUserData.new_account !== "undefined" &&
-                            (payqrUserData.new_account == true || payqrUserData.new_account == "true"))
-                        {
-                            message += " Администратор сайта свяжется с вами в самое ближайшее время!";
-                        }
+                if(typeof payqrUserData !== "undefined" && typeof payqrUserData.cart_id !== "undefined" && parseInt(payqrUserData.cart_id))
+                {
+                    redirectUrl += "/?id=" + payqrUserData.cart_id + "&shk_action=empty";
+                }
 
-                        alert(message);
-
-                        redirectUrl = window.location.origin;
-
-                        if(typeof payqrUserData !== "undefined" && typeof payqrUserData.cart_id !== "undefined" && parseInt(payqrUserData.cart_id))
-                        {
-                            redirectUrl += "/?id=" + payqrUserData.cart_id + "&shk_action=empty";
-                        }
-
-                        window.location.replace( redirectUrl );
-                    }
-                    catch(e)
-                    {
-                        alert("Возникли ошибки при обработке данных!");
-                    }
-
-                });
+                window.location.replace( redirectUrl );
             }
+            catch(e)
+            {
+                alert("Возникли ошибки при обработке данных!");
+            }
+
         });
-    });
-})();
+    }
+});
