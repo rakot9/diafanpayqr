@@ -1,52 +1,53 @@
-var checkReady = function(callback) {
-    if (window.jQuery) {
-        //callback(jQuery);
-    }
-    else {
-        window.setTimeout(function() { checkReady(callback); }, 100);
-    }
-};
-
-// Start polling...
-checkReady(function($) {
-
-    console.log("checkReady function");
-
-    $(function() {
-        if(typeof payQR  !== "undefined")
-        {
-            payQR.onPaid(function(data) {
-
-                var message = "Ваш заказ #" + data.orderId + " успешно оплачен на сумму: " + data.amount + "! ";
-
-                try{
-                    payqrUserData = $.parseJSON(data.userData);
-
-                    if(typeof payqrUserData !== "undefined" && typeof payqrUserData.new_account !== "undefined" &&
-                        (payqrUserData.new_account == true || payqrUserData.new_account == "true"))
-                    {
-                        message += " Администратор сайта свяжется с вами в самое ближайшее время!";
-                    }
-
-                    alert(message);
-
-                    redirectUrl = window.location.origin;
-
-                    if(typeof payqrUserData !== "undefined" && typeof payqrUserData.cart_id !== "undefined" && parseInt(payqrUserData.cart_id))
-                    {
-                        redirectUrl += "/?id=" + payqrUserData.cart_id + "&shk_action=empty";
-                    }
-
-                    window.location.replace( redirectUrl );
-                }
-                catch(e)
-                {
-                    alert("Возникли ошибки при обработке данных!");
-                }
-
-            });
+(function() {
+    // Poll for jQuery to come into existance
+    var checkReady = function(callback) {
+        if (window.jQuery) {
+            callback(jQuery);
         }
+        else {
+            window.setTimeout(function() { checkReady(callback); }, 100);
+        }
+    };
 
-        //
+    // Start polling...
+    checkReady(function($) {
+
+        console.log("checkReady function");
+
+        $(function() {
+            if(typeof payQR  !== "undefined")
+            {
+                payQR.onPaid(function(data) {
+
+                    var message = "Ваш заказ #" + data.orderId + " успешно оплачен на сумму: " + data.amount + "! ";
+
+                    try{
+                        payqrUserData = $.parseJSON(data.userData);
+
+                        if(typeof payqrUserData !== "undefined" && typeof payqrUserData.new_account !== "undefined" &&
+                            (payqrUserData.new_account == true || payqrUserData.new_account == "true"))
+                        {
+                            message += " Администратор сайта свяжется с вами в самое ближайшее время!";
+                        }
+
+                        alert(message);
+
+                        redirectUrl = window.location.origin;
+
+                        if(typeof payqrUserData !== "undefined" && typeof payqrUserData.cart_id !== "undefined" && parseInt(payqrUserData.cart_id))
+                        {
+                            redirectUrl += "/?id=" + payqrUserData.cart_id + "&shk_action=empty";
+                        }
+
+                        window.location.replace( redirectUrl );
+                    }
+                    catch(e)
+                    {
+                        alert("Возникли ошибки при обработке данных!");
+                    }
+
+                });
+            }
+        });
     });
-});
+})();
