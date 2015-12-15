@@ -28,9 +28,10 @@ Custom::inc('includes/controller.php');
 Custom::inc('includes/model.php');
 Custom::inc('includes/action.php');
 
-Custom::inc('includes/controller.php');
-Custom::inc('includes/model.php');
-Custom::inc('includes/action.php');
+Custom::inc('includes/session.php');
+$diafan->_session = new Session($diafan);
+$diafan->_session->init();
+
 
 switch($_GET['action']) {
 
