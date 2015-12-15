@@ -1,4 +1,4 @@
-$(function() {
+document.addEventListener("DOMContentLoaded", function(event) {
     if(typeof payQR  !== "undefined")
     {
         payQR.onPaid(function(data) {
