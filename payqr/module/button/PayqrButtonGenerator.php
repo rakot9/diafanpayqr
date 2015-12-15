@@ -33,7 +33,7 @@ class PayqrButtonGenerator
     public function getJs()
     {
       return '<script src="https://payqr.ru/popup.js?merchId=' . $this->getOption("merchantID") . '"></script>' . PHP_EOL .
-             '<script src="http://'.$_SERVER['SERVER_NAME'].'/payqr/diafanpayqr.js">';
+             '<!--script src="http://'.$_SERVER['SERVER_NAME'].'/payqr/diafanpayqr.js"-->';
     }
     
     public function getCartButton()
@@ -122,14 +122,14 @@ class PayqrButtonGenerator
         //$data['data-promocard-required'] = $this->getOption('data-promocard-required');
         //$data['data-promocode-details'] = json_encode(array($this->getOption('data-promocode-details-article'), $this->getOption('data-promocode-details-description')));
         //$data['data-promocard-details'] = json_encode(array($this->getOption('data-promocard-details-article'), $this->getOption('data-promocard-details-description')));
-        if(!empty($this->getOption('data-promocode-details-article')) || !empty($this->getOption('data-promocode-details-description')))
-        {
-            $data['data-promocode-details'] = json_encode(array($this->getOption('data-promocode-details-article'), $this->getOption('data-promocode-details-description')));
-        }
-        if(!empty($this->getOption('data-promocard-details-article') || !empty($this->getOption('data-promocard-details-description'))))
-        {
-            $data['data-promocard-details'] = json_encode(array($this->getOption('data-promocard-details-article'), $this->getOption('data-promocard-details-description')));
-        }
+//        if(!empty($this->getOption('data-promocode-details-article')) || !empty($this->getOption('data-promocode-details-description')))
+//        {
+//            $data['data-promocode-details'] = json_encode(array($this->getOption('data-promocode-details-article'), $this->getOption('data-promocode-details-description')));
+//        }
+//        if(!empty($this->getOption('data-promocard-details-article') || !empty($this->getOption('data-promocard-details-description'))))
+//        {
+//            $data['data-promocard-details'] = json_encode(array($this->getOption('data-promocard-details-article'), $this->getOption('data-promocard-details-description')));
+//        }
         $userdata = array(
             "custom" => $this->getOption("data-userdata"),
         );
