@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 payqrUserData = $.parseJSON(data.userData);
 
                 //прикручиваем скрипт очистки корзины
-                $.get("payqr/payqr_config.php", function(data){
+                $.get("payqr/payqr_config.php?action=clear_cart", function(data){
                     console.log('Отправили информацию об очистке корзины');
                 });
                 //
