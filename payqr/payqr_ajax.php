@@ -40,6 +40,7 @@ switch($_GET['action']) {
         echo "payqr_ajax.php Очистка корзины! " . PHP_EOL ;
 
         print_r($_SESSION);
+        print_r($diafan);
 
         DB::query("DELETE FROM {shop_cart} WHERE user_id=%d AND trash='0'", $diafan->_users->id);
         //Очищаем сессию
