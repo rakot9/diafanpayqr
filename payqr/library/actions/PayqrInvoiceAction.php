@@ -114,7 +114,7 @@ class PayqrInvoiceAction extends PayqrAction
      *
      * curl "https://payqr.ru/shop/api/1.0/reverts/{id}"
      */
-    public function get_invoice($inv_id)
+    public function invoice_get($inv_id)
     {
         try{
             return $this->get(PayqrBase::$apiUrl.'/invoices/'.$inv_id);
