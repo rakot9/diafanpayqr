@@ -37,7 +37,9 @@ switch($_GET['action']) {
     case 'clear_cart':
         //производим очситку корзины
         //PayqrLog::log("payqr_ajax.php Очистка корзины!");
-        echo "payqr_ajax.php Очистка корзины!";
+        echo "payqr_ajax.php Очистка корзины! " . PHP_EOL ;
+
+        print_r($_SESSION);
 
         DB::query("DELETE FROM {shop_cart} WHERE user_id=%d AND trash='0'", $diafan->_users->id);
         //Очищаем сессию
