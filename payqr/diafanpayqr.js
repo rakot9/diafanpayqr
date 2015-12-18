@@ -36,7 +36,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     $('span[class*="js_cart_count_"]').click(function(){
         //
-        $.get('http://' + window.location.hostname + "/payqr/payqr_ajax.php?action=get_cart_button").done(
+        $.post('http://' + window.location.hostname + "/payqr/payqr_ajax.php?action=get_cart_button",
+            function(){
+                console.log("success");
+            }).done(
             function(data){console.log("Done get_cart_button");}
         );
         //
