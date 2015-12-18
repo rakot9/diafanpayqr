@@ -53,8 +53,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 function(){
                     console.log("success");
                 }).done(
-                function(data){console.log("Done get_cart_button");}
-            );
+                    function(data){
+                        console.log("Done get_cart_button");
+                    }
+                );
         }
     });
 });

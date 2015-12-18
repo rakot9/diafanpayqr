@@ -42,8 +42,8 @@ switch($_GET['action']) {
         //PayqrLog::log("payqr_ajax.php Очистка корзины!");
         echo "payqr_ajax.php Очистка корзины! " . PHP_EOL ;
 
-        print_r($_SESSION);
-        print_r($diafan);
+        //print_r($_SESSION);
+        //print_r($diafan);
 
         DB::query("DELETE FROM {shop_cart} WHERE user_id=%d AND trash='0'", $diafan->_users->id);
         //Очищаем сессию
@@ -63,7 +63,7 @@ switch($_GET['action']) {
     case 'get_cart_button':
         //получаем товары в корзине
         $products = array();
-        print_r($_SESSION["cart"]);
+        print_r($_SESSION);
         //формируем кнопку
         $button = new PayqrButtonGenerator($products);
         echo $button->getCartButton();
