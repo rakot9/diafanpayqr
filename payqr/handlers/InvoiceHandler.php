@@ -323,10 +323,16 @@ class InvoiceHandler
     {
         $total = $this->invoice->getAmount();
         
-        $rows = DB::query_fetch_all("SELECT sd.id, sd.name1, sd.text1, sdt.price  
-                                     FROM {shop_delivery} sd 
-                                     LEFT JOIN {shop_delivery_thresholds} sdt ON sd.id=sdt.delivery_id 
-                                     WHERE sd.act1='1' AND sd.trash='0' AND sdt.trash='0' AND sdt.amount < %f", $total);
+        $rows = DB::query_fetch_all("SELECT sd.id, sd.name1, sd.text1, sdt.price
+                                        FROM diafan_shop_delivery sd
+                                        LEFT JOIN
+                                            (SELECT sdt.delivery_id, MIN(price) AS price
+                                             FROM diafan_shop_delivery_thresholds sdt
+                                             WHERE
+                                                sdt.amount < %f AND sdt.trash='0'
+                                             GROUP BY sdt.delivery_id
+                                             ORDER BY sdt.price ASC) sdt ON sd.id=sdt.delivery_id
+                                        WHERE sd.act1='1' AND sd.trash='0'", $total);
 
         $delivery_cases = array();
 
