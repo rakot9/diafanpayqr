@@ -66,10 +66,10 @@ switch($_GET['action']) {
         $products = array();
 
         //формируем кнопку
-        $this->diafan->_site->module = 'cart';
-        $this->diafan->current_module = 'cart';
+        $diafan->_site->module = 'cart';
+        $diafan->current_module = 'cart';
         Custom::inc('modules/cart/cart.php');
-        $cart = new Cart($this->diafan);
+        $cart = new Cart($diafan);
         $cart_products = $cart->model->form_table();
 
         $discount = isset($cart_products['discount_total']['discount'])? $cart_products['discount_total']['discount'] : 0;
