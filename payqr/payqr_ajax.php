@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . "/PayqrConfig.php"; // подключаем основной класс
+
 //подключаем diafan
 define('DIAFAN', 1);
 define('TITLE', "Регистрация на сайте");
