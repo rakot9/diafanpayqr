@@ -58,4 +58,13 @@ switch($_GET['action']) {
             unset($_SESSION["cart_count"]);
         }
         break;
+    case 'get_cart_button':
+        //получаем товары в корзине
+        $products = array();
+        print_r($_SESSION["cart"]);
+        //формируем кнопку
+        $button = new PayqrButtonGenerator($products);
+        echo $button->getCartButton();
+        //
+        break;
 }
