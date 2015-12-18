@@ -66,7 +66,7 @@ class PayqrButtonGenerator
     private function get_button_html($scenario, $products, $type)
     {
         $data = $this->get_data($scenario, $products, $type);
-        $button_name = "";
+        $button_name = "Купить быстрее";
         if($this->getOption("custom-button-name"))
         {
             $button_name = $this->getOption("custom-button-name");
