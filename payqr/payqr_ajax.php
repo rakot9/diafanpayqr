@@ -61,10 +61,45 @@ switch($_GET['action']) {
         }
         break;
     case 'get_cart_button':
-        //получаем товары в корзине
+
+        //товары в корзине
         $products = array();
-        print_r($_SESSION);
+
         //формируем кнопку
+        $this->diafan->_site->module = 'cart';
+        $this->diafan->current_module = 'cart';
+        Custom::inc('modules/cart/cart.php');
+        $cart = new Cart($this->diafan);
+        $cart_products = $cart->model->form_table();
+
+        $discount = isset($cart_products['discount_total']['discount'])? $cart_products['discount_total']['discount'] : 0;
+        $is_percent = false;
+        if(strpos($discount ,'%') !== false)
+        {
+            //скидка в %
+            $discount = str_replace('%', '', $discount);
+            $discount = trim($discount);
+            $discount = (int)$discount;
+            $is_percent = true;
+        }
+
+        foreach($cart_products['rows'] as $product)
+        {
+            $position_amount = $product['summ']? str_replace('&nbsp;', '', $product['summ']) : 0;
+            $position_amount = round((float)$position_amount, 2);
+            $position_amount = $is_percent? ($position_amount * ((100 - $discount)/100)) : $position_amount;
+
+            $productId = explode("_", $product['id']);
+
+            $products[] = array(
+                "article"  => isset($productId[0])? (int)$productId[0] : $product['id'],
+                "name"     => $product['name'],
+                "imageUrl" => (isset($product['img'], $product['img']['src']) && !empty($product['img']['src']))? $product['img']['src'] : "",
+                "quantity" => $product['count'],
+                "amount"   => round($position_amount)
+            );
+        }
+
         $button = new PayqrButtonGenerator($products);
         echo $button->getCartButton();
         //
