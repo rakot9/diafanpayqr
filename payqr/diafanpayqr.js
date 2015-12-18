@@ -55,6 +55,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 }).done(
                     function(data){
                         console.log("Done get_cart_button");
+                        $('button[class*="payqr-button"]').replaceWith(data);
                     }
                 );
         }
