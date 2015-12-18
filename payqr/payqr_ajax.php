@@ -93,7 +93,7 @@ switch($_GET['action']) {
 
             $products[] = array(
                 "article"  => isset($productId[0])? (int)$productId[0] : $product['id'],
-                "name"     => $product['name'],
+                "name"     => strip_tags($product['name']),
                 "imageUrl" => (isset($product['img'], $product['img']['src']) && !empty($product['img']['src']))? $product['img']['src'] : "",
                 "quantity" => $product['count'],
                 "amount"   => round($position_amount)
