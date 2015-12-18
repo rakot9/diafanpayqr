@@ -36,12 +36,25 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     $('span[class*="js_cart_count_"]').click(function(){
         //
-        $.post('http://' + window.location.hostname + "/payqr/payqr_ajax.php?action=get_cart_button",
-            function(){
-                console.log("success");
-            }).done(
-            function(data){console.log("Done get_cart_button");}
-        );
+//        $.post('http://' + window.location.hostname + "/payqr/payqr_ajax.php?action=get_cart_button",
+//            function(){
+//                console.log("success");
+//            }).done(
+//            function(data){console.log("Done get_cart_button");}
+//        );
         //
+    });
+
+    $(document).ajaxComplete(function(event, xhr, settings){
+
+        if(settings.url.indexOf('/shop/cart/') != -1)
+        {
+            $.post('http://' + window.location.hostname + "/payqr/payqr_ajax.php?action=get_cart_button",
+                function(){
+                    console.log("success");
+                }).done(
+                function(data){console.log("Done get_cart_button");}
+            );
+        }
     });
 });
