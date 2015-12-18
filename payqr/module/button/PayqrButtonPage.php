@@ -76,13 +76,13 @@ class PayqrButtonPage
         
         $button = new PayqrButtonGenerator();
         $html .= $button->getJs();
-        $html .= "<div class='button_example'>Кнопка в корзине<br/>";
+        $html .= "<div class='button_example'>Кнопка в корзине и в карточке товара<br/>";
         $html .= $button->getCartButton();
         $html .= "</div>";
         
-        $html .= "<div class='button_example'>Кнопка в карточке товара<br/>";
-        $html .= $button->getProductButton();
-        $html .= "</div>";
+//        $html .= "<div class='button_example'>Кнопка в карточке товара<br/>";
+//        $html .= $button->getProductButton();
+//        $html .= "</div>";
         
         $html .= "<div class='button_example'>Кнопка на страничке категории товаров<br/>";
         $html .= $button->getCategoryButton();
