@@ -335,6 +335,33 @@ class PayqrOrder
         }
 
         /*
+         * Делаем проверку на заполнение по отдельности Фамилии Имени и Отчества
+         */
+
+        if(isset($diafanOrderParams["firstname"]) && !empty($diafanOrderParams["firstname"]))
+        {
+            if(isset($this->customerData->firstName) && !empty($this->customerData->firstName))
+            {
+                DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, '%s')", $this->customerData->firstName, $diafanOrderParams["firstname"], $order_id, '0');
+            }
+        }
+        if(isset($diafanOrderParams["lastname"]) && !empty($diafanOrderParams["lastname"]))
+        {
+            if(isset($this->customerData->lastName) && !empty($this->customerData->lastName))
+            {
+                DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, '%s')", $this->customerData->lastName, $diafanOrderParams["lastname"], $order_id, '0');
+            }
+        }
+        if(isset($diafanOrderParams["fathersname"]) && !empty($diafanOrderParams["fathersname"]))
+        {
+            if(isset($this->customerData->middleName) && !empty($this->customerData->middleName))
+            {
+                DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, '%s')", $this->customerData->middleName, $diafanOrderParams["fathersname"], $order_id, '0');
+            }
+        }
+
+
+        /*
         * 
         */
         if(isset($diafanOrderParams["phone"], $this->customerData->phone) && !empty($this->customerData->phone))
