@@ -329,7 +329,7 @@ class InvoiceHandler
                                             (SELECT sdt.delivery_id, MIN(price) AS price
                                              FROM diafan_shop_delivery_thresholds sdt
                                              WHERE
-                                                sdt.amount < %f AND sdt.trash='0'
+                                                sdt.amount <= %f AND sdt.trash='0'
                                              GROUP BY sdt.delivery_id
                                              ORDER BY sdt.price ASC) sdt ON sd.id=sdt.delivery_id
                                         WHERE sd.act1='1' AND sd.trash='0'", $total);
