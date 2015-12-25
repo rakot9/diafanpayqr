@@ -150,7 +150,8 @@ class PayqrOrder
     {
         foreach($this->invoice->getCart() as $product)
         {
-            if(empty($product->article) || empty((int)$product->article))
+            $product->article = (int)$product->article;
+            if(empty($product->article) || empty($product->article))
             {
                 continue;
             }
