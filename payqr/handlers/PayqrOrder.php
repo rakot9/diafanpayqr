@@ -39,7 +39,7 @@ class PayqrOrder
         /**
         *  Актуализируем корзину
         */
-        //$this->_dfnActualizeCart();
+        $this->_dfnActualizeCart();
         
         /**
          * Создаем заказ
