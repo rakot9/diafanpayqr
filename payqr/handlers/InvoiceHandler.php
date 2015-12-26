@@ -84,12 +84,6 @@ class InvoiceHandler
         }
         
         /**
-         * Устанавливаем общую стоимость заказа
-         */
-        PayqrLog::log("Устанавливаем сумму заказа");
-        $total = $order->getTotalAmount();
-
-        /**
          * Устанавливаем пользовательские данные
          */
         $order->setUserOrderData($orderId);
@@ -106,7 +100,11 @@ class InvoiceHandler
             $order->updateDeliverySumm($orderId, $deliverySelected->article, $delivery);
         }
 
-
+        /**
+         * Устанавливаем общую стоимость заказа
+         */
+        PayqrLog::log("Устанавливаем сумму заказа");
+        $total = $order->getTotalAmount();
         $this->invoice->setAmount(round($total + $delivery) );
 
         PayqrLog::log("Установили сумму заказа вместе с доставкой: ". $total . "+" . $delivery. " = ". ($total+$delivery));
