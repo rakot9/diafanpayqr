@@ -49,4 +49,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 );
         }
     });
+
+    setTimeout(ShowPayqr, 1500);
+
+    function ShowPayqr(){$('button[class*="payqr"]').show();}
+
 });
