@@ -420,5 +420,39 @@ class PayqrOrder
         {
             DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $this->deliveryData->flat, $diafanOrderParams["flat"], $order_id, 0);
         }
+
+        /*
+         * Если же администратор сайта внес поле "Адрес", то просто конкетинируем все параметры в одну строку
+         */
+        if(isset($diafanOrderParams["address"]))
+        {
+            $str = "";
+
+            if(isset($this->deliveryData->city))
+            {
+                $str .= "г.: " . $this->deliveryData->city;
+            }
+            if(isset($this->deliveryData->street))
+            {
+                $str .= ", ул.:" . $this->deliveryData->street;
+            }
+            if(isset($this->deliveryData->house))
+            {
+                $str .= ", д.: " . $this->deliveryData->house;
+            }
+            if(isset($this->deliveryData->unit))
+            {
+                $str .= ", стр.: " . $this->deliveryData->unit;
+            }
+            if(isset($this->deliveryData->flat))
+            {
+                $str .= ", эт.: " . $this->deliveryData->flat;
+            }
+            $str = trim($str, " ,.:;");
+
+            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $str, $diafanOrderParams["address"], $order_id, 0);
+        }
+
+
     }
 }
