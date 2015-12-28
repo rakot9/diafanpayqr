@@ -28,6 +28,9 @@ class PayqrOrder
         $this->customerData = $invoice->getCustomer();
         $this->diafan = $diafan;
         $this->deliveryData = $invoice->getDelivery();
+        //payqr
+        PayqrLog::log("Получаем способы доставки");
+        PayqrLog::log(print_r($this->deliveryData, true));
     }
 
     /**
