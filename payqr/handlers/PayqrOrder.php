@@ -408,10 +408,10 @@ class PayqrOrder
         /*
         * 
         */
-        if(isset($this->deliveryData->unit, $diafanOrderParams["suite"]) && !empty($this->deliveryData->unit))
-        {
-            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $this->deliveryData->unit, $diafanOrderParams["suite"], $order_id, 0);
-        }
+//        if(isset($this->deliveryData->unit, $diafanOrderParams["suite"]) && !empty($this->deliveryData->unit))
+//        {
+//            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $this->deliveryData->unit, $diafanOrderParams["suite"], $order_id, 0);
+//        }
 
         /*
         * 
@@ -419,6 +419,11 @@ class PayqrOrder
         if(isset($this->deliveryData->flat, $diafanOrderParams["flat"]) && !empty($this->deliveryData->flat))
         {
             DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $this->deliveryData->flat, $diafanOrderParams["flat"], $order_id, 0);
+        }
+
+        if(isset($this->deliveryData->flat, $diafanOrderParams["suite"]) && !empty($this->deliveryData->building))
+        {
+            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $this->deliveryData->building, $diafanOrderParams["suite"], $order_id, 0);
         }
 
         /*
@@ -444,10 +449,15 @@ class PayqrOrder
             {
                 $str .= ", стр.: " . $this->deliveryData->unit;
             }
+            if(isset($this->deliveryData->building))
+            {
+                $str .= ", корп.: " . $this->deliveryData->building;
+            }
             if(isset($this->deliveryData->flat))
             {
                 $str .= ", эт.: " . $this->deliveryData->flat;
             }
+
             $str = trim($str, " ,.:;");
 
             DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $str, $diafanOrderParams["address"], $order_id, 0);
