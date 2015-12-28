@@ -434,6 +434,10 @@ class PayqrOrder
         {
             DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $this->deliveryData->floor, $diafanOrderParams["floor"], $order_id, 0);
         }
+        if(isset($this->deliveryData->comment, $diafanOrderParams["comment"]) && !empty($this->deliveryData->comment))
+        {
+            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $this->deliveryData->comment, $diafanOrderParams["comment"], $order_id, 0);
+        }
 
         /*
          * Если же администратор сайта внес поле "Адрес", то просто конкетинируем все параметры в одну строку
