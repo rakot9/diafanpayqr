@@ -452,7 +452,7 @@ class PayqrOrder
             }
             if(isset($this->deliveryData->street))
             {
-                $str .= ", ул.:" . $this->deliveryData->street;
+                $str .= ", ул.: " . $this->deliveryData->street;
             }
             if(isset($this->deliveryData->house))
             {
