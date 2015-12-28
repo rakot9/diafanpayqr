@@ -421,9 +421,18 @@ class PayqrOrder
             DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $this->deliveryData->flat, $diafanOrderParams["flat"], $order_id, 0);
         }
 
-        if(isset($this->deliveryData->flat, $diafanOrderParams["suite"]) && !empty($this->deliveryData->building))
+        if(isset($this->deliveryData->building, $diafanOrderParams["suite"]) && !empty($this->deliveryData->building))
         {
             DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $this->deliveryData->building, $diafanOrderParams["suite"], $order_id, 0);
+        }
+
+        if(isset($this->deliveryData->hallway, $diafanOrderParams["entrance"]) && !empty($this->deliveryData->hallway))
+        {
+            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $this->deliveryData->hallway, $diafanOrderParams["entrance"], $order_id, 0);
+        }
+        if(isset($this->deliveryData->floor, $diafanOrderParams["floor"]) && !empty($this->deliveryData->floor))
+        {
+            DB::query("INSERT INTO {shop_order_param_element} (value, param_id, element_id, trash) VALUES ('%s', %d, %d, %d)", $this->deliveryData->floor, $diafanOrderParams["floor"], $order_id, 0);
         }
 
         /*
@@ -455,8 +464,17 @@ class PayqrOrder
             }
             if(isset($this->deliveryData->flat))
             {
-                $str .= ", эт.: " . $this->deliveryData->flat;
+                $str .= ", кв.: " . $this->deliveryData->flat;
             }
+            if(isset($this->deliveryData->floor))
+            {
+                $str .= ", эт.: " . $this->deliveryData->floor;
+            }
+            if(isset($this->deliveryData->hallway))
+            {
+                $str .= ", под.: " . $this->deliveryData->hallway;
+            }
+
 
             $str = trim($str, " ,.:;");
 
