@@ -136,9 +136,9 @@ class PayqrOrder
             else{
                 PayqrLog::log("Производим вставку дополнительной стоимости товара: " . PHP_EOL);
 
-                $product->article = preg_replace("/add/i", "", $product->article);
+                $additional_cost_article = preg_replace("/add/i", "", $product->article);
 
-                $shop_good_id = DB::query("INSERT INTO {shop_order_additional_cost} (order_id, additional_cost_id, summ) VALUES (%d, %d, %f)", $order_id, (int)$product->article, (float)$product->amount);
+                $shop_good_id = DB::query("INSERT INTO {shop_order_additional_cost} (order_id, additional_cost_id, summ) VALUES (%d, %d, %f)", $order_id, (int)$additional_cost_article, $product->amount);
 
                 $goods_summ += round((float)$product->amount, 2);
             }
