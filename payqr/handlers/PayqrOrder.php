@@ -202,9 +202,8 @@ class PayqrOrder
 
             //Производим актуализацию корзины
             //Todo необходимо получить из базы стоимость товара
-            $product->article = (int)preg_replace("/add/i","", $product->article);
-
-            $additional_costs = DB::query_fetch_all("SELECT * FROM {shop_additional_cost} WHERE id = %d", $product->article);
+            //$product->article = (int)preg_replace("/add/i","", $product->article);
+            $additional_costs = DB::query_fetch_all("SELECT * FROM {shop_additional_cost} WHERE id = %d", (int)preg_replace("/add/i","", $product->article));
 
             foreach($additional_costs as $add_cost)
             {
