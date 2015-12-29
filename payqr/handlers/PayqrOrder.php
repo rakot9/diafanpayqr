@@ -208,13 +208,22 @@ class PayqrOrder
 
             foreach($additional_costs as $add_cost)
             {
+                $add_cost['percent'] = (int)$add_cost['percent'];
+
                 if(!empty($add_cost['percent']))
                 {
                     $product->amount = ceil((((int)$add_cost['percent'])/100) * $total_cost );
                 }
                 else
                 {
-                    $product->amount = (int)$add_cost["amount"];
+                    if($add_cost["amount"] < $total_cost)
+                    {
+                        $product->amount = (int)$add_cost["price"];
+                    }
+                    else
+                    {
+                        $product->amount = (int)$add_cost["price"];
+                    }
                 }
             }
         }
