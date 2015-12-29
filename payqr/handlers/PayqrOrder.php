@@ -117,7 +117,7 @@ class PayqrOrder
 
         foreach($this->invoice->getCart() as $product)
         {
-            PayqrLog::log("Artcile: " . $product->article);
+            PayqrLog::log("Article: " . $product->article);
 
             if(strpos($product->article, "add") === false)
             {
@@ -140,7 +140,7 @@ class PayqrOrder
 
                 $shop_good_id = DB::query("INSERT INTO {shop_order_additional_cost} (order_id, additional_cost_id, summ) VALUES (%d, %d, %f)", $order_id, (int)$product->article, (float)$product->amount);
 
-                $goods_summ += round((float)$product->amount, 2);
+                //$goods_summ += round((float)$product->amount, 2);
             }
         }
         
@@ -202,6 +202,8 @@ class PayqrOrder
 
             //Производим актуализацию корзины
             //Todo необходимо получить из базы стоимость товара
+            $product->article = (int)preg_replace("/add/i","", $product->article);
+
             $additional_costs = DB::query_fetch_all("SELECT * FROM {shop_additional_cost} WHERE id = %d", $product->article);
 
             foreach($additional_costs as $add_cost)
