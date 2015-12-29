@@ -85,6 +85,26 @@ switch($_GET['action']) {
 
         //Additional
         PayqrLog::log(print_r($_SESSION, true));
+        $cart_additional_cost = array();
+        if($_SESSION['cart_additional_cost'])
+        {
+            foreach($_SESSION['cart_additional_cost'] as $key => $cost_id)
+            {
+                foreach ($cart_products["additional_cost"] as $row)
+                {
+                    if($cost_id == $row["id"])
+                    {
+                        $products[] = array(
+                            "article"  => 999999 + $row["id"],
+                            "name"     => $row["name"],
+                            "imageUrl" => '',
+                            "quantity" => 1,
+                            "amount"   => $row["summ"]
+                        );
+                    }
+                }
+            }
+        }
 
         foreach($cart_products['rows'] as $product)
         {
