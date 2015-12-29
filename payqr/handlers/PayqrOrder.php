@@ -117,6 +117,8 @@ class PayqrOrder
 
         foreach($this->invoice->getCart() as $product)
         {
+            PayqrLog::log("Artcile: " . $product->article);
+
             if(strpos($product->article, "add") === false)
             {
                 $shop_good_id = DB::query("INSERT INTO {shop_order_goods} (order_id, good_id, count_goods) VALUES (%d, %d, %f)", $order_id, (int)$product->article, (int)$product->quantity);
