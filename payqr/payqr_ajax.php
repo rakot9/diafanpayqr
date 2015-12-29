@@ -95,7 +95,7 @@ switch($_GET['action']) {
                     if($cost_id == $row["id"])
                     {
                         $products[] = array(
-                            "article"  => 999999 + $row["id"],
+                            "article"  => "add" . $row["id"],
                             "name"     => $row["name"],
                             "imageUrl" => '',
                             "quantity" => 1,
