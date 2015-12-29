@@ -52,6 +52,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     setTimeout(ShowPayqr, 1500);
 
-    function ShowPayqr(){$('button[class*="payqr"]').show();}
+    function ShowPayqr()
+    {
+        $("input[name*='additional_cost_ids']").removeAttr('checked');
+        $('button[class*="payqr"]').show();
+    }
 
 });
