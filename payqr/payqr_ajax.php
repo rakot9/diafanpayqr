@@ -83,6 +83,9 @@ switch($_GET['action']) {
             $is_percent = true;
         }
 
+        //Additional
+        PayqrLog::log(print_r($_SESSION, true));
+
         foreach($cart_products['rows'] as $product)
         {
             $position_amount = $product['summ']? str_replace('&nbsp;', '', $product['summ']) : 0;
