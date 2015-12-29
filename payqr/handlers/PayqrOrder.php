@@ -140,7 +140,7 @@ class PayqrOrder
 
                 $shop_good_id = DB::query("INSERT INTO {shop_order_additional_cost} (order_id, additional_cost_id, summ) VALUES (%d, %d, %f)", $order_id, (int)$additional_cost_article, $product->amount);
 
-                $goods_summ += round((float)$product->amount, 2);
+                $goods_summ += round($product->amount, 2);
             }
         }
         
