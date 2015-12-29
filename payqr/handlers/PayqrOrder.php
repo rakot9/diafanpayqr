@@ -168,7 +168,7 @@ class PayqrOrder
     {
         foreach($this->invoice->getCart() as $product)
         {
-            $product->article = (int)$product->article;
+            $product->article = /*(int)*/$product->article;//Теперь необходимо передавать в тип данных string
             if(empty($product->article) || empty($product->article))
             {
                 continue;
