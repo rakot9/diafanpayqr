@@ -117,18 +117,7 @@ class PayqrOrder
 
         foreach($this->invoice->getCart() as $product)
         {
-            if(strpos($product->article, "add") === true)
-            {
-                PayqrLog::log("Производим вставку дополнительной стоимости товара: " . PHP_EOL);
-
-                $product->article = preg_replace("/add/i", "", $product->article);
-
-                $shop_good_id = DB::query("INSERT INTO {shop_order_additional_cost} (order_id, additional_cost_id, summ) VALUES (%d, %d, %f)", $order_id, (int)$product->article, (float)$product->amount);
-
-                //Todo необходимо получить из базы стоимость товара
-                $goods_summ += round((float)$product->amount, 2);
-            }
-            else
+            if(strpos($product->article, "add") === false)
             {
                 $shop_good_id = DB::query("INSERT INTO {shop_order_goods} (order_id, good_id, count_goods) VALUES (%d, %d, %f)", $order_id, (int)$product->article, (int)$product->quantity);
 
@@ -141,6 +130,16 @@ class PayqrOrder
                 DB::query("UPDATE {shop_order_goods} SET price=%f, discount_id=%d WHERE id=%d", $row["price"], $row["discount_id"], $shop_good_id);
 
                 $goods_summ += round((float)$row["price"] * (int)$product->quantity , 2);
+            }
+            else{
+                PayqrLog::log("Производим вставку дополнительной стоимости товара: " . PHP_EOL);
+
+                $product->article = preg_replace("/add/i", "", $product->article);
+
+                $shop_good_id = DB::query("INSERT INTO {shop_order_additional_cost} (order_id, additional_cost_id, summ) VALUES (%d, %d, %f)", $order_id, (int)$product->article, (float)$product->amount);
+
+                //Todo необходимо получить из базы стоимость товара
+                $goods_summ += round((float)$product->amount, 2);
             }
         }
         
