@@ -140,7 +140,6 @@ class PayqrOrder
 
                 $shop_good_id = DB::query("INSERT INTO {shop_order_additional_cost} (order_id, additional_cost_id, summ) VALUES (%d, %d, %f)", $order_id, (int)$product->article, (float)$product->amount);
 
-                //Todo необходимо получить из базы стоимость товара
                 $goods_summ += round((float)$product->amount, 2);
             }
         }
@@ -166,6 +165,7 @@ class PayqrOrder
 
     private function _dfnActualizeCart()
     {
+        $total_cost = 0;
         foreach($this->invoice->getCart() as $product)
         {
             $product->article = /*(int)*/$product->article;//Теперь необходимо передавать в тип данных string
@@ -184,6 +184,37 @@ class PayqrOrder
             $product->amount = $product->quantity * $price;
             $name = $this->_dfnGetProductName((int)$product->article);
             $product->name = !empty($name)? $name : $product->name;
+
+            if(strpos($product->article, "add") === false)
+            {
+                continue;
+            }
+            $total_cost += $product->amount;
+        }
+
+        //Теперь производим актуализацию стоимости дополнительных услуг
+        foreach($this->invoice->getCart() as $product)
+        {
+            if(strpos($product->article, "add") === false)
+            {
+                continue;
+            }
+
+            //Производим актуализацию корзины
+            //Todo необходимо получить из базы стоимость товара
+            $additional_costs = DB::query_fetch_all("SELECT * FROM {shop_additional_cost} WHERE id = %d", $product->article);
+
+            foreach($additional_costs as $add_cost)
+            {
+                if(!empty($add_cost['percent']))
+                {
+                    $product->amount = ceil((((int)$add_cost['percent'])/100) * $total_cost );
+                }
+                else
+                {
+                    $product->amount = (int)$add_cost["amount"];
+                }
+            }
         }
     }
 
